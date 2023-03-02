@@ -18,10 +18,6 @@ enum DDGSyncCryptoSubkeyIds : int {
 
 };
 
-int test_init(void) {
-    return 10;
-}
-
 DDGSyncCryptoResult ddgSyncGenerateAccountKeys(
     unsigned char primaryKey[DDGSYNCCRYPTO_PRIMARY_KEY_SIZE],
     unsigned char secretKey[DDGSYNCCRYPTO_SECRET_KEY_SIZE],

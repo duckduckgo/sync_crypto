@@ -27,9 +27,6 @@ typedef enum : int {
     DDGSYNCCRYPTO_DECRYPTION_FAILED,
 } DDGSyncCryptoResult;
 
-
-extern int test_init(void);
-
 /**
  * Used to create data needed to create an account.  Once the server returns a JWT, store the primary and secret key.
  *
