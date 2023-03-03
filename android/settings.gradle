@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "ddg-android-sync-crypto"
-include ':app'
+include ':sync-crypto'
