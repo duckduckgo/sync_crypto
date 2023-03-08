@@ -24,7 +24,8 @@ let package = Package(
             name: "DDGSyncCrypto",
             dependencies: ["Clibsodium"],
             path: "native_lib",
-            exclude: ["native_lib/third-party"]
+            exclude: ["native_lib/third-party"],
+            publicHeadersPath: "."
         )
     ]
 )
