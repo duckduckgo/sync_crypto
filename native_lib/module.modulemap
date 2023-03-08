@@ -1,0 +1,4 @@
+module DDGSyncCrypto {
+    header "DDGSyncCrypto.h"
+    export *
+}
