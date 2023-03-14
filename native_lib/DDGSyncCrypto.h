@@ -12,8 +12,8 @@ typedef enum : int {
     DDGSYNCCRYPTO_STRETCHED_PRIMARY_KEY_SIZE = 32,
     DDGSYNCCRYPTO_PROTECTED_SECRET_KEY_SIZE = (crypto_secretbox_MACBYTES + DDGSYNCCRYPTO_STRETCHED_PRIMARY_KEY_SIZE + crypto_secretbox_NONCEBYTES),
     DDGSYNCCRYPTO_ENCRYPTED_EXTRA_BYTES_SIZE = (crypto_secretbox_MACBYTES + crypto_secretbox_NONCEBYTES),
-    DDGSYNCCRYPTO_PUBLIC_KEY = crypto_box_PUBLICKEYBYTES,
-    DDGSYNCCRYPTO_PRIVATE_KEY = crypto_box_SECRETKEYBYTES,
+    DDGSYNCCRYPTO_PUBLIC_KEY_SIZE = crypto_box_PUBLICKEYBYTES,
+    DDGSYNCCRYPTO_PRIVATE_KEY_SIZE = crypto_box_SECRETKEYBYTES,
 } DDGSyncCryptoSizes;
 
 typedef enum : int {
@@ -70,8 +70,8 @@ extern DDGSyncCryptoResult ddgSyncPrepareForLogin(
  * @param secretKey OUT
  */
 DDGSyncCryptoResult ddgSyncPrepareForConnect(
-    unsigned char primaryKey[DDGSYNCCRYPTO_PUBLIC_KEY],
-    unsigned char secretKey[DDGSYNCCRYPTO_PRIVATE_KEY]
+    unsigned char primaryKey[DDGSYNCCRYPTO_PUBLIC_KEY_SIZE],
+    unsigned char secretKey[DDGSYNCCRYPTO_PRIVATE_KEY_SIZE]
 );
 
 /**
@@ -104,13 +104,13 @@ extern DDGSyncCryptoResult ddgSyncDecrypt(
  * Used to encrypt a message. It's expected to use a public key generated using ddgSyncPrepareForConnect.
  *
  * @param sealed OUT - the size of this should be equal to the size of data to encrypt, plus crypto_box_SEALBYTES.
- * @param primaryKey IN - the key used for encryption (assumed to be of length DDGSYNCCRYPTO_PRIMARY_KEY_SIZE)
+ * @param primaryKey IN - the key used for encryption (assumed to be of length DDGSYNCCRYPTO_PUBLIC_KEY_SIZE)
  * @param message IN - the data to be encrypted.  Should be of size specified by rawDataLength
  * @param messageLength IN - the length of the data to be encrypted
  */
 extern DDGSyncCryptoResult ddgSyncSeal(
     unsigned char *sealed,
-    unsigned char primaryKey[DDGSYNCCRYPTO_PRIMARY_KEY_SIZE],
+    unsigned char primaryKey[DDGSYNCCRYPTO_PUBLIC_KEY_SIZE],
     unsigned char *message,
     unsigned long long messageLength
 );
@@ -120,15 +120,15 @@ extern DDGSyncCryptoResult ddgSyncSeal(
  *
  * @param cyphertext OUT - the decrypted data.  Should be of size specified by cypherTextLength - crypto_box_SEALBYTES.
  * @param cypherTextLength IN - the length of the data to be decrypted
- * @param primaryKey IN - the key used for encryption (assumed to be of length DDGSYNCCRYPTO_PRIMARY_KEY_SIZE)
- * @param secretKey IN - the secret key (assumed to be of length DDGSYNCCRYPTO_SECRET_KEY_SIZE)
+ * @param primaryKey IN - the key used for encryption (assumed to be of length DDGSYNCCRYPTO_PUBLIC_KEY_SIZE)
+ * @param secretKey INT - the secret key (assumed to be of length DDGSYNCCRYPTO_PRIVATE_KEY_SIZE)
  * @param rawBytes INT - the bytes to decrypt
  */
 extern DDGSyncCryptoResult ddgSyncSealOpen(
     unsigned char *cyphertext,
     unsigned long long cypherTextLength,
-    unsigned char primaryKey[DDGSYNCCRYPTO_PRIMARY_KEY_SIZE],
-    unsigned char secretKey[DDGSYNCCRYPTO_SECRET_KEY_SIZE],
+    unsigned char primaryKey[DDGSYNCCRYPTO_PUBLIC_KEY_SIZE],
+    unsigned char secretKey[DDGSYNCCRYPTO_PRIVATE_KEY_SIZE],
     unsigned char *rawBytes
 );
 

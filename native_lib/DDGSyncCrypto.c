@@ -114,8 +114,8 @@ DDGSyncCryptoResult ddgSyncPrepareForLogin(
 }
 
 DDGSyncCryptoResult ddgSyncPrepareForConnect(
-    unsigned char primaryKey[DDGSYNCCRYPTO_PUBLIC_KEY],
-    unsigned char secretKey[DDGSYNCCRYPTO_PRIVATE_KEY]) {
+    unsigned char primaryKey[DDGSYNCCRYPTO_PUBLIC_KEY_SIZE],
+    unsigned char secretKey[DDGSYNCCRYPTO_PRIVATE_KEY_SIZE]) {
 
     if (0 != crypto_box_keypair(primaryKey, secretKey)) {
         return DDGSYNCCRYPTO_CONNECT_KEY_FAILED;
@@ -162,7 +162,7 @@ extern DDGSyncCryptoResult ddgSyncDecrypt(
 
 DDGSyncCryptoResult ddgSyncSeal(
     unsigned char *sealed,
-    unsigned char primaryKey[DDGSYNCCRYPTO_PRIMARY_KEY_SIZE],
+    unsigned char primaryKey[DDGSYNCCRYPTO_PUBLIC_KEY_SIZE],
     unsigned char *message,
     unsigned long long messageLength) {
 
@@ -180,8 +180,8 @@ DDGSyncCryptoResult ddgSyncSeal(
 DDGSyncCryptoResult ddgSyncSealOpen(
     unsigned char *cyphertext,
     unsigned long long cypherTextLength,
-    unsigned char primaryKey[DDGSYNCCRYPTO_PRIMARY_KEY_SIZE],
-    unsigned char secretKey[DDGSYNCCRYPTO_SECRET_KEY_SIZE],
+    unsigned char primaryKey[DDGSYNCCRYPTO_PUBLIC_KEY_SIZE],
+    unsigned char secretKey[DDGSYNCCRYPTO_PRIVATE_KEY_SIZE],
     unsigned char *rawBytes) {
 
     unsigned char decrypted[cypherTextLength - crypto_box_SEALBYTES];
