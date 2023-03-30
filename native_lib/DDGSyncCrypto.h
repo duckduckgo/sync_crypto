@@ -14,6 +14,7 @@ typedef enum : int {
     DDGSYNCCRYPTO_ENCRYPTED_EXTRA_BYTES_SIZE = (crypto_secretbox_MACBYTES + crypto_secretbox_NONCEBYTES),
     DDGSYNCCRYPTO_PUBLIC_KEY_SIZE = crypto_box_PUBLICKEYBYTES,
     DDGSYNCCRYPTO_PRIVATE_KEY_SIZE = crypto_box_SECRETKEYBYTES,
+    DDGSYNCCRYPTO_SEAL_EXTRA_BYTES_SIZE = crypto_box_SEALBYTES
 } DDGSyncCryptoSizes;
 
 typedef enum : int {
