@@ -1,6 +1,43 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id "com.vanniktech.maven.publish" version "0.23.1"
+}
+
+def getVersionName = { ->
+    def props = new Properties()
+    file("../version.properties").withInputStream { props.load(it) }
+    return props.getProperty("VERSION_NAME")
+}
+
+import com.vanniktech.maven.publish.SonatypeHost
+
+mavenPublishing {
+    // publishing to https://s01.oss.sonatype.org
+    publishToMavenCentral(SonatypeHost.S01, true)
+
+    signAllPublications()
+
+    coordinates("com.duckduckgo.ddgsynccrypto", "ddg-android-sync-crypto", "${getVersionName}")
+
+    pom {
+        name = "DDG Sync Crypto"
+        description = "DuckDuckGo cryptography library."
+        inceptionYear = "2022"
+        url = "https://github.com/duckduckgo/sync_crypto"
+        developers {
+            developer {
+                id = "duckduckgo"
+                name = "DuckDuckGo"
+                url = "https://github.com/duckduckgo/"
+            }
+        }
+        scm {
+            url = "https://github.com/duckduckgo/sync_crypto"
+            connection = "scm:git:git://github.com/duckduckgo/sync_crypto.git"
+            developerConnection = "scm:git:ssh://git@github.com:duckduckgo/sync_crypto.git"
+        }
+    }
 }
 
 android {
@@ -11,6 +48,8 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
+        project.archivesBaseName = "ddg-android-sync-crypto-${getVersionName}"
+        setProperty("archivesBaseName", "${archivesBaseName}")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
