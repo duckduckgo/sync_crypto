@@ -10,6 +10,13 @@ def getVersionName = { ->
     return props.getProperty("VERSION_NAME")
 }
 
+def buildVersionCode = {
+    def versionName = getVersionName()
+    def (major, minor, patch) = versionName.toLowerCase().tokenize('-')[0].tokenize('.')
+    (major, minor, patch) = [major, minor, patch].collect { it.toInteger() }
+    return (major * 10_000_000) + (minor * 10_000) + (patch * 1_000)
+}
+
 import com.vanniktech.maven.publish.SonatypeHost
 
 mavenPublishing {
@@ -22,8 +29,8 @@ mavenPublishing {
 
     pom {
         name = "DDG Sync Crypto"
-        description = "DuckDuckGo cryptography library."
-        inceptionYear = "2022"
+        description = "DuckDuckGo Sync Cryptography Library."
+        inceptionYear = "2023"
         url = "https://github.com/duckduckgo/sync_crypto"
         developers {
             developer {
@@ -46,8 +53,8 @@ android {
     defaultConfig {
         minSdk 23
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        versionCode buildVersionCode()
+        versionName getVersionName()
         project.archivesBaseName = "ddg-android-sync-crypto-${getVersionName}"
         setProperty("archivesBaseName", "${archivesBaseName}")
 
