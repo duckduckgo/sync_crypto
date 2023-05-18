@@ -25,7 +25,7 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates("com.duckduckgo.ddgsynccrypto", "ddg-android-sync-crypto", "${getVersionName}")
+    coordinates("com.duckduckgo.synccrypto", "sync-crypto-android", "${getVersionName}")
 
     pom {
         name = "DDG Sync Crypto"
@@ -55,7 +55,7 @@ android {
         targetSdk 32
         versionCode buildVersionCode()
         versionName getVersionName()
-        project.archivesBaseName = "ddg-android-sync-crypto-${getVersionName}"
+        project.archivesBaseName = "ddg-sync-crypto-android${getVersionName}"
         setProperty("archivesBaseName", "${archivesBaseName}")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
