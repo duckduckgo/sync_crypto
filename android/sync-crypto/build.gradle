@@ -1,0 +1,92 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id "com.vanniktech.maven.publish" version "0.23.1"
+}
+
+def getVersionName = { ->
+    def props = new Properties()
+    file("../version.properties").withInputStream { props.load(it) }
+    return props.getProperty("VERSION_NAME")
+}
+
+def buildVersionCode = {
+    def versionName = getVersionName()
+    def (major, minor, patch) = versionName.toLowerCase().tokenize('-')[0].tokenize('.')
+    (major, minor, patch) = [major, minor, patch].collect { it.toInteger() }
+    return (major * 10_000_000) + (minor * 10_000) + (patch * 1_000)
+}
+
+import com.vanniktech.maven.publish.SonatypeHost
+
+mavenPublishing {
+    // publishing to https://s01.oss.sonatype.org
+    publishToMavenCentral(SonatypeHost.S01, true)
+
+    signAllPublications()
+
+    coordinates("com.duckduckgo.synccrypto", "sync-crypto-android", "${getVersionName}")
+
+    pom {
+        name = "DDG Sync Crypto"
+        description = "DuckDuckGo Sync Cryptography Library."
+        inceptionYear = "2023"
+        url = "https://github.com/duckduckgo/sync_crypto"
+        developers {
+            developer {
+                id = "duckduckgo"
+                name = "DuckDuckGo"
+                url = "https://github.com/duckduckgo/"
+            }
+        }
+        scm {
+            url = "https://github.com/duckduckgo/sync_crypto"
+            connection = "scm:git:git://github.com/duckduckgo/sync_crypto.git"
+            developerConnection = "scm:git:ssh://git@github.com:duckduckgo/sync_crypto.git"
+        }
+    }
+}
+
+android {
+    compileSdk 32
+
+    defaultConfig {
+        minSdk 23
+        targetSdk 32
+        versionCode buildVersionCode()
+        versionName getVersionName()
+        project.archivesBaseName = "ddg-sync-crypto-android${getVersionName}"
+        setProperty("archivesBaseName", "${archivesBaseName}")
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+        }
+    }
+
+    buildFeatures {
+        prefab true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+}
