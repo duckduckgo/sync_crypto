@@ -32,6 +32,13 @@ mavenPublishing {
         description = "DuckDuckGo Sync Cryptography Library."
         inceptionYear = "2023"
         url = "https://github.com/duckduckgo/sync_crypto"
+        licenses {
+            license {
+                name = "Apache License Version 2.0"
+                url = "https://github.com/duckduckgo/sync_crypto/blob/main/LICENSE"
+                distribution = "https://github.com/duckduckgo/sync_crypto/blob/main/LICENSE"
+            }
+        }
         developers {
             developer {
                 id = "duckduckgo"
