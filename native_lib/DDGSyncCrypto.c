@@ -1,11 +1,9 @@
-
 #include <string.h>
 
 #include "DDGSyncCrypto.h"
-#include "sodium.h"
 
 // Seems mad that you still need to define this?!
-#define min(x, y) (x < y) ? x : y
+//#define min(x, y) (x < y) ? x : y
 
 // Contexts must be 8 characters long but are otherwise arbitrary
 #define DDGSYNC_STRETCHED_PRIMARY_KEY_CONTEXT "Stretchy"
@@ -18,7 +16,7 @@ enum DDGSyncCryptoSubkeyIds : int {
 
 };
 
-DDGSyncCryptoResult ddgSyncGenerateAccountKeys(
+__declspec(dllexport) DDGSyncCryptoResult __cdecl ddgSyncGenerateAccountKeys(
     unsigned char primaryKey[DDGSYNCCRYPTO_PRIMARY_KEY_SIZE],
     unsigned char secretKey[DDGSYNCCRYPTO_SECRET_KEY_SIZE],
     unsigned char protectedSecretKey[DDGSYNCCRYPTO_PROTECTED_SECRET_KEY_SIZE],
@@ -87,7 +85,7 @@ DDGSyncCryptoResult ddgSyncGenerateAccountKeys(
     return DDGSYNCCRYPTO_OK;
 }
 
-DDGSyncCryptoResult ddgSyncPrepareForLogin(
+__declspec(dllexport) DDGSyncCryptoResult __cdecl ddgSyncPrepareForLogin(
     unsigned char *passwordHash,
     unsigned char *stretchedPrimaryKey,
     unsigned char primaryKey[DDGSYNCCRYPTO_PRIMARY_KEY_SIZE]) {
@@ -113,7 +111,7 @@ DDGSyncCryptoResult ddgSyncPrepareForLogin(
     return DDGSYNCCRYPTO_OK;
 }
 
-DDGSyncCryptoResult ddgSyncPrepareForConnect(
+__declspec(dllexport) DDGSyncCryptoResult __cdecl ddgSyncPrepareForConnect(
     unsigned char primaryKey[DDGSYNCCRYPTO_PUBLIC_KEY_SIZE],
     unsigned char secretKey[DDGSYNCCRYPTO_PRIVATE_KEY_SIZE]) {
 
@@ -124,7 +122,7 @@ DDGSyncCryptoResult ddgSyncPrepareForConnect(
     return DDGSYNCCRYPTO_OK;
 }
 
-DDGSyncCryptoResult ddgSyncEncrypt(
+__declspec(dllexport) DDGSyncCryptoResult __cdecl ddgSyncEncrypt(
     unsigned char *encryptedBytes,
     unsigned char *rawBytes,
     unsigned long long rawBytesLength,
@@ -143,7 +141,7 @@ DDGSyncCryptoResult ddgSyncEncrypt(
     return DDGSYNCCRYPTO_OK;
 }
 
-extern DDGSyncCryptoResult ddgSyncDecrypt(
+__declspec(dllexport) DDGSyncCryptoResult __cdecl ddgSyncDecrypt(
     unsigned char *rawBytes,
     unsigned char *encryptedBytes,
     unsigned long long encryptedBytesLength,
@@ -160,7 +158,7 @@ extern DDGSyncCryptoResult ddgSyncDecrypt(
     return DDGSYNCCRYPTO_OK;
 }
 
-DDGSyncCryptoResult ddgSyncSeal(
+__declspec(dllexport) DDGSyncCryptoResult __cdecl ddgSyncSeal(
     unsigned char *sealed,
     unsigned char primaryKey[DDGSYNCCRYPTO_PUBLIC_KEY_SIZE],
     unsigned char *message,
@@ -177,7 +175,7 @@ DDGSyncCryptoResult ddgSyncSeal(
     return DDGSYNCCRYPTO_OK;
 }
 
-DDGSyncCryptoResult ddgSyncSealOpen(
+__declspec(dllexport) DDGSyncCryptoResult __cdecl ddgSyncSealOpen(
     unsigned char *cyphertext,
     unsigned long long cypherTextLength,
     unsigned char primaryKey[DDGSYNCCRYPTO_PUBLIC_KEY_SIZE],

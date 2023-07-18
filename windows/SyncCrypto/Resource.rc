@@ -1,0 +1,40 @@
+1 VERSIONINFO
+FILEVERSION 1,0,0,0
+PRODUCTVERSION 1,0,0,0
+FILEOS 0x40004
+FILETYPE 0x1
+{
+	BLOCK "StringFileInfo"
+	{
+		BLOCK "040904B0"
+		{
+			VALUE "CompanyName", "DuckDuckGo"
+				VALUE "FileDescription", "Sync crypto library"
+				VALUE "FileVersion", "1.0.0.0\0"
+				VALUE "LegalCopyright", "© 2023 DuckDuckGo"
+				VALUE "InternalName", "SyncCrypto.dll"
+				VALUE "ProductName", "SyncCrypto.dll"
+				VALUE "ProductVersion", "1.0.0.0\0"
+		}
+	}
+
+	BLOCK "VarFileInfo"
+	{
+		VALUE "Translation", 0x0409 0x04B0
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

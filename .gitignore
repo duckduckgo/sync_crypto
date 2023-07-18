@@ -7,3 +7,20 @@ DerivedData/
 .swiftpm/config/registries.json
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
+
+# Windows
+windows/SyncCrypto/.vs
+windows/SyncCrypto/*.suo
+windows/SyncCrypto/*.user
+windows/SyncCrypto/*.sln.docstates
+windows/SyncCrypto/[Dd]ebug/
+windows/SyncCrypto/[Dd]ebugPublic/
+windows/SyncCrypto/[Rr]elease/
+windows/SyncCrypto/[Rr]eleases/
+windows/SyncCrypto/x64/
+windows/SyncCrypto/x86/
+windows/SyncCrypto/build/
+windows/SyncCrypto/bld/
+windows/SyncCrypto/[Bb]in/
+windows/SyncCrypto/[Oo]bj/
+
