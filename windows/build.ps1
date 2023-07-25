@@ -6,9 +6,31 @@ $ErrorActionPreference = "Stop"
 Write-Debug "Validating version number ($version)"
 [System.Version]::Parse($version)
 
+function RemoveDirectory($directory) 
+{
+    if (Test-Path $directory) 
+    {
+        Remove-Item -Path $directory -Recurse -Force
+    }
+}
+
+RemoveDirectory "WindowsBrowser.Sync.Crypto.Native\bin"
+RemoveDirectory "WindowsBrowser.Sync.Crypto.Native\obj"
+RemoveDirectory "WindowsBrowser.Sync.Crypto.Managed\bin"
+RemoveDirectory "WindowsBrowser.Sync.Crypto.Managed\obj"
+
 function Build ($configuration, $platform) {
-    Write-Debug "Building sync crypto ($configuration | $platform)"
     $msbuild = ./vswhere -latest -prerelease -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
+
+    $runtimeIdentifier = "win-$platform"
+    & $msbuild WindowsBrowser.Sync.Crypto.sln /t:Restore /p:Configuration=$configuration /p:Platform=$platform /p:RuntimeIdentifier=$runtimeIdentifier
+    If ($LastExitCode -ne 0) 
+    {
+        Write-Debug "Failed to restore sync crypto ($configuration | $platform)"
+        exit 1
+    }
+
+    Write-Debug "Building sync crypto ($configuration | $platform)"
     & $msbuild WindowsBrowser.Sync.Crypto.sln `
         /p:Configuration=$configuration `
         /p:Platform=$platform `
