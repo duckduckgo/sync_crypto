@@ -9,18 +9,18 @@ DerivedData/
 .netrc
 
 # Windows
-windows/SyncCrypto/.vs
-windows/SyncCrypto/*.suo
-windows/SyncCrypto/*.user
-windows/SyncCrypto/*.sln.docstates
-windows/SyncCrypto/[Dd]ebug/
-windows/SyncCrypto/[Dd]ebugPublic/
-windows/SyncCrypto/[Rr]elease/
-windows/SyncCrypto/[Rr]eleases/
-windows/SyncCrypto/x64/
-windows/SyncCrypto/x86/
-windows/SyncCrypto/build/
-windows/SyncCrypto/bld/
-windows/SyncCrypto/[Bb]in/
-windows/SyncCrypto/[Oo]bj/
+windows/**/.vs
+windows/**/*.suo
+windows/**/*.user
+windows/**/*.sln.docstates
+windows/**/[Dd]ebug/
+windows/**/[Dd]ebugPublic/
+windows/**/[Rr]elease/
+windows/**/[Rr]eleases/
+windows/**/x64/
+windows/**/x86/
+windows/**/build/
+windows/**/bld/
+windows/**/[Bb]in/
+windows/**/[Oo]bj/
 

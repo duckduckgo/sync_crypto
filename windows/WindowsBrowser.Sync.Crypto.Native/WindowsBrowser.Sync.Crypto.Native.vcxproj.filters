@@ -16,12 +16,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\native_lib\DDGSyncCrypto.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DDGSyncCryptoSizes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

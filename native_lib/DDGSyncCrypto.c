@@ -166,13 +166,14 @@ DDGSyncCryptoResult ddgSyncSeal(
     unsigned char *message,
     unsigned long long messageLength) {
 
-    unsigned char output[crypto_box_SEALBYTES + messageLength];
+    unsigned char* output = new unsigned char[crypto_box_SEALBYTES + messageLength];
 
     if (crypto_box_seal(output, message, messageLength, primaryKey) != 0) {
         return DDGSYNCCRYPTO_SEAL_FAILED;
     }
 
     memcpy(sealed, output, crypto_box_SEALBYTES + messageLength);
+    delete[] output;
 
     return DDGSYNCCRYPTO_OK;
 }
@@ -184,13 +185,14 @@ DDGSyncCryptoResult ddgSyncSealOpen(
     unsigned char secretKey[DDGSYNCCRYPTO_PRIVATE_KEY_SIZE],
     unsigned char *rawBytes) {
 
-    unsigned char decrypted[cypherTextLength - crypto_box_SEALBYTES];
+    unsigned char* decrypted = new unsigned char[cypherTextLength - crypto_box_SEALBYTES];
 
     if (crypto_box_seal_open(decrypted, cyphertext, cypherTextLength, primaryKey, secretKey) != 0) {
         return DDGSYNCCRYPTO_SEAL_FAILED;
     }
 
     memcpy(rawBytes, decrypted, cypherTextLength - crypto_box_SEALBYTES);
+    delete[] decrypted;
 
     return DDGSYNCCRYPTO_OK;
 }
