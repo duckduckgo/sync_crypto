@@ -13,7 +13,7 @@ This is the VC++ project for building agains libsodium and sync_cryto.
 
 This is the .NET project, which contains the P/Invoke wrappers to be able to consume the native dll.
 
-The project is generating NuGet pacakges on build.
+The project is generating NuGet packages on build.
 
 ## Updating the managed wrapper
 

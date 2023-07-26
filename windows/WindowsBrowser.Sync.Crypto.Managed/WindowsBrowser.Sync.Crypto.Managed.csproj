@@ -23,12 +23,6 @@
 		  <PrivateAssets>All</PrivateAssets>
 	  </ProjectReference>
 
-	  <None Include="..\WindowsBrowser.Sync.Crypto.Native\bin\$(Platform)\$(Configuration)\libsodium.dll" Link="libsodium.dll">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <Pack>true</Pack>
-		  <PackagePath>contentFiles/any/any/libsodium.dll</PackagePath>
-		  <PackageCopyToOutput>true</PackageCopyToOutput>
-	  </None>
 	  <None Include="..\WindowsBrowser.Sync.Crypto.Native\bin\$(Platform)\$(Configuration)\WindowsBrowser.Sync.Crypto.Native.dll" Link="WindowsBrowser.Sync.Crypto.Native.dll">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		  <Pack>True</Pack>

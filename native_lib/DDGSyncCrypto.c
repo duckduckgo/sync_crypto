@@ -166,7 +166,7 @@ DDGSyncCryptoResult ddgSyncSeal(
     unsigned char *message,
     unsigned long long messageLength) {
 
-    unsigned char* output = new unsigned char[crypto_box_SEALBYTES + messageLength];
+    unsigned char* output = (unsigned char*)malloc((crypto_box_SEALBYTES + messageLength) * sizeof(unsigned char));
 
     DDGSyncCryptoResult result;
     if (crypto_box_seal(output, message, messageLength, primaryKey) != 0) {
@@ -176,7 +176,7 @@ DDGSyncCryptoResult ddgSyncSeal(
         memcpy(sealed, output, crypto_box_SEALBYTES + messageLength);
         result = DDGSYNCCRYPTO_OK;
     }
-    delete[] output;
+    free(output);
     return result;
 }
 
@@ -187,7 +187,7 @@ DDGSyncCryptoResult ddgSyncSealOpen(
     unsigned char secretKey[DDGSYNCCRYPTO_PRIVATE_KEY_SIZE],
     unsigned char *rawBytes) {
 
-    unsigned char* decrypted = new unsigned char[cypherTextLength - crypto_box_SEALBYTES];
+    unsigned char* decrypted = (unsigned char*)malloc((cypherTextLength - crypto_box_SEALBYTES) * sizeof(unsigned char));
 
     DDGSyncCryptoResult result;
     if (crypto_box_seal_open(decrypted, cyphertext, cypherTextLength, primaryKey, secretKey) != 0) {
@@ -198,6 +198,6 @@ DDGSyncCryptoResult ddgSyncSealOpen(
         result = DDGSYNCCRYPTO_OK;
     }
 
-    delete[] decrypted;
+    free(decrypted);
     return result;
 }
