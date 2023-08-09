@@ -166,15 +166,21 @@ DDGSyncCryptoResult ddgSyncSeal(
     unsigned char *message,
     unsigned long long messageLength) {
 
-    unsigned char output[crypto_box_SEALBYTES + messageLength];
-
-    if (crypto_box_seal(output, message, messageLength, primaryKey) != 0) {
+    unsigned char* output = (unsigned char*)malloc((crypto_box_SEALBYTES + messageLength) * sizeof(unsigned char));
+    if (!output) {
         return DDGSYNCCRYPTO_SEAL_FAILED;
     }
 
-    memcpy(sealed, output, crypto_box_SEALBYTES + messageLength);
-
-    return DDGSYNCCRYPTO_OK;
+    DDGSyncCryptoResult result;
+    if (crypto_box_seal(output, message, messageLength, primaryKey) != 0) {
+        result = DDGSYNCCRYPTO_SEAL_FAILED;
+    }
+    else {
+        memcpy(sealed, output, crypto_box_SEALBYTES + messageLength);
+        result = DDGSYNCCRYPTO_OK;
+    }
+    free(output);
+    return result;
 }
 
 DDGSyncCryptoResult ddgSyncSealOpen(
@@ -184,13 +190,20 @@ DDGSyncCryptoResult ddgSyncSealOpen(
     unsigned char secretKey[DDGSYNCCRYPTO_PRIVATE_KEY_SIZE],
     unsigned char *rawBytes) {
 
-    unsigned char decrypted[cypherTextLength - crypto_box_SEALBYTES];
-
-    if (crypto_box_seal_open(decrypted, cyphertext, cypherTextLength, primaryKey, secretKey) != 0) {
+    unsigned char* decrypted = (unsigned char*)malloc((cypherTextLength - crypto_box_SEALBYTES) * sizeof(unsigned char));
+    if (!decrypted) {
         return DDGSYNCCRYPTO_SEAL_FAILED;
     }
 
-    memcpy(rawBytes, decrypted, cypherTextLength - crypto_box_SEALBYTES);
+    DDGSyncCryptoResult result;
+    if (crypto_box_seal_open(decrypted, cyphertext, cypherTextLength, primaryKey, secretKey) != 0) {
+        result = DDGSYNCCRYPTO_SEAL_FAILED;
+    }
+    else {
+        memcpy(rawBytes, decrypted, cypherTextLength - crypto_box_SEALBYTES);
+        result = DDGSYNCCRYPTO_OK;
+    }
 
-    return DDGSYNCCRYPTO_OK;
+    free(decrypted);
+    return result;
 }

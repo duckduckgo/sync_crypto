@@ -1,6 +1,10 @@
+#ifdef _WIN32
+#include <sodium.h>
+#else
 #import "sodium/crypto_pwhash.h"
 #import "sodium/crypto_box.h"
 #import "sodium/crypto_secretbox.h"
+#endif
 
 #ifndef DDGSyncCrypto_h
 #define DDGSyncCrypto_h

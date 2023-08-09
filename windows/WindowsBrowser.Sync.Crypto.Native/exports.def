@@ -1,0 +1,19 @@
+LIBRARY SyncCrypto
+
+EXPORTS
+    ddgSyncGenerateAccountKeys
+    ddgSyncPrepareForLogin
+    ddgSyncPrepareForConnect
+    ddgSyncEncrypt
+    ddgSyncDecrypt
+    ddgSyncSeal
+    ddgSyncSealOpen
+    ddgSyncGet_DDGSYNCCRYPTO_HASH_SIZE
+    ddgSyncGet_DDGSYNCCRYPTO_PRIMARY_KEY_SIZE
+    ddgSyncGet_DDGSYNCCRYPTO_SECRET_KEY_SIZE
+    ddgSyncGet_DDGSYNCCRYPTO_STRETCHED_PRIMARY_KEY_SIZE
+    ddgSyncGet_DDGSYNCCRYPTO_PROTECTED_SECRET_KEY_SIZE
+    ddgSyncGet_DDGSYNCCRYPTO_ENCRYPTED_EXTRA_BYTES_SIZE
+    ddgSyncGet_DDGSYNCCRYPTO_PUBLIC_KEY_SIZE
+    ddgSyncGet_DDGSYNCCRYPTO_PRIVATE_KEY_SIZE
+    ddgSyncGet_DDGSYNCCRYPTO_SEAL_EXTRA_BYTES_SIZE

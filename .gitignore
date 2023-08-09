@@ -7,3 +7,20 @@ DerivedData/
 .swiftpm/config/registries.json
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
+
+# Windows
+windows/**/.vs
+windows/**/*.suo
+windows/**/*.user
+windows/**/*.sln.docstates
+windows/**/[Dd]ebug/
+windows/**/[Dd]ebugPublic/
+windows/**/[Rr]elease/
+windows/**/[Rr]eleases/
+windows/**/x64/
+windows/**/x86/
+windows/**/build/
+windows/**/bld/
+windows/**/[Bb]in/
+windows/**/[Oo]bj/
+
