@@ -109,26 +109,28 @@ int main(int argc, char **argv) {
         return 3;
     }
 
+    printf("{\n");
     {
         unsigned char printbuf[sizeof(primaryKey)*2];
         sodium_bin2base64((char*)printbuf, sizeof(printbuf), primaryKey, sizeof(primaryKey), sodium_base64_VARIANT_ORIGINAL);
-        printf("%s\n", printbuf);
+        printf("\t{ \"primaryKey\": \"%s\",\n", printbuf);
     }
     {
         unsigned char printbuf[sizeof(secretKey)*2];
         sodium_bin2base64((char*)printbuf, sizeof(printbuf), secretKey, sizeof(secretKey), sodium_base64_VARIANT_ORIGINAL);
-        printf("%s\n", printbuf);
+        printf("\t{ \"secretKey\": \"%s\"\n,", printbuf);
     }
     {
         unsigned char printbuf[sizeof(protectedSecretKey)*2];
         sodium_bin2base64((char*)printbuf, sizeof(printbuf), protectedSecretKey, sizeof(protectedSecretKey), sodium_base64_VARIANT_ORIGINAL);
-        printf("%s\n", printbuf);
+        printf("\t{ \"protectedSecretKey\": \"%s\"\n,", printbuf);
     }
     {
         unsigned char printbuf[sizeof(passwordHash)*2];
         sodium_bin2base64((char*)printbuf, sizeof(printbuf), passwordHash, sizeof(passwordHash), sodium_base64_VARIANT_ORIGINAL);
-        printf("%s\n", printbuf);
+        printf("\t{ \"passwordHash\": \"%s\"\n,", printbuf);
     }
+    printf("}\n");
 
     return 0;
 }
