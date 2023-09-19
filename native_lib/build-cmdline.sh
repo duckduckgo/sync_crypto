@@ -1,1 +1,1 @@
-g++ DDGCmdline.c DDGSyncCrypto.c -lsodium -o DDGCmdline
+g++ test_user_setup.c DDGSyncCrypto.c -lsodium -o test_user_setup
