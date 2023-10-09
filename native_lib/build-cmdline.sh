@@ -2,7 +2,11 @@ if [ -d native_lib ]; then
     cd native_lib
 fi
 
+
+sudo apt install libsodium-dev
 g++ -I/opt/homebrew/include/ -L/opt/homebrew/lib/ test_user_setup.c DDGSyncCrypto.c -lsodium -o test_user_setup
+
+ls -l
 
 # Smoke test
 output=$(./test_user_setup aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaAAA= b c)
