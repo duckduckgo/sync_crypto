@@ -1,3 +1,7 @@
+if [ -d native_lib ]; then
+    cd native_lib
+fi
+
 g++ -I/opt/homebrew/include/ -L/opt/homebrew/lib/ test_user_setup.c DDGSyncCrypto.c -lsodium -o test_user_setup
 
 # Smoke test
