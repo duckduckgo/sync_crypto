@@ -18,5 +18,5 @@ jobs:
       
     - uses: actions/upload-artifact@v3
       with:
-        name: my-artifact
+        name: test_user_setup binary
         path: native_lib/test_user_setup
