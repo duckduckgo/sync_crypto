@@ -77,7 +77,7 @@ const recoveryCodeBase64 = ({ user_id, primary_key }) => {
 
 const run = async () => {
   const dryRun = getInput('dry-run') !== 'false';
-  addNotice('dryRun = ' + dryRun);
+  if (dryRun) { addNotice('dryRun = ' + dryRun); }
 
   buildCLI();
   const keys = await generateAccountKeys();
@@ -88,10 +88,8 @@ const run = async () => {
   // TODO: store bookmarks and credentials
 
   const recoveryCode = recoveryCodeBase64(keys);
-  addNotice('recovery-code = ' + recoveryCode);
+  addNotice(`recovery-code = '${recoveryCode}'`);
   setOutput('recovery-code', recoveryCode);
-
-  throw new Error('mijo');
 };
 
 
