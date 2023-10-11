@@ -13,10 +13,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: build and test
-      run: bash native_lib/build-cmdline.sh
-      
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: build
+      run: make dist-ci
+    - name: test
+      run: make test
+
     - uses: actions/upload-artifact@v3
       with:
-        name: test_user_setup binary
-        path: native_lib/test_user_setup
+        name: gen_account_keys binary
+        path: bin/gen_account_keys

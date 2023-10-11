@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sodium.h>
-#include "DDGSyncCrypto.h"
+#include "../native_lib/DDGSyncCrypto.h"
 
 using std::min;
 
@@ -85,27 +85,34 @@ DDGSyncCryptoResult ddgSyncGenerateAccountKeysWithSecretKey(
 
 int main(int argc, char **argv) {
     if (argc != 4) {
-        printf("Usage: %s secretkey username password\n", argv[0]);
+        fprintf(stderr, "Usage: %s username password secretKey\n", argv[0]);
         return 1;
     }
+
+    const char *username = argv[1];
+    const char *password = argv[2];
+    const char *secretKeyBase64 = argv[3];
 
     unsigned char primaryKey[DDGSYNCCRYPTO_PRIMARY_KEY_SIZE];
     unsigned char secretKey[DDGSYNCCRYPTO_SECRET_KEY_SIZE];
     unsigned char protectedSecretKey[DDGSYNCCRYPTO_PROTECTED_SECRET_KEY_SIZE];
     unsigned char passwordHash[DDGSYNCCRYPTO_HASH_SIZE];
-    
-    DDGSyncCryptoResult res;
+
     {
-        int err = sodium_base642bin(secretKey, DDGSYNCCRYPTO_SECRET_KEY_SIZE, argv[1], strlen(argv[1]), NULL, NULL, NULL, sodium_base64_VARIANT_ORIGINAL);
+        int err = sodium_base642bin(
+            secretKey, DDGSYNCCRYPTO_SECRET_KEY_SIZE,
+            secretKeyBase64, strlen(secretKeyBase64),
+            NULL, NULL, NULL, sodium_base64_VARIANT_ORIGINAL
+        );
         if (err != 0) {
-            printf("err %d b64 decoding secretKey\n", err);
+            fprintf(stderr, "Error decoding secretKey. It must contain %d bytes encoded in base64.\n", DDGSYNCCRYPTO_SECRET_KEY_SIZE);
             return 2;
         }
     }
 
-    res = ddgSyncGenerateAccountKeysWithSecretKey(primaryKey, secretKey, protectedSecretKey, passwordHash, argv[2], argv[3]);
+    DDGSyncCryptoResult res = ddgSyncGenerateAccountKeysWithSecretKey(primaryKey, secretKey, protectedSecretKey, passwordHash, username, password);
     if (res != 0) {
-        printf("errorcode: %d\n", res);
+        fprintf(stderr, "Error generating account keys: %d\n", res);
         return 3;
     }
 
