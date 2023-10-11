@@ -7,7 +7,7 @@ try {
   const payload = JSON.stringify(github.context.payload, undefined, 2)
   console.log(`The event payload: ${payload}`);
 
-  core.setOutput('recovery-code', 'dummy');
+  core.setOutput('recovery-code', process.cwd());
 } catch (error) {
   core.setFailed(error.message);
 }

@@ -24,6 +24,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - id: dummy
+      - id: action
         uses: ./action/
-      - run: echo "Output was ${{ steps.dummy.outputs.recovery-code }}"
+      - run: echo "Recovery code is '${{ steps.action.outputs.recovery-code }}'."
