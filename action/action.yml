@@ -1,0 +1,9 @@
+name: 'Sync Test Account Generator'
+description: 'Registers a new DDG Sync account, stores sample pre-encrypted data, and returns recovery code.'
+outputs:
+  recovery-code:
+    description: 'A DDG Sync recovery code'
+
+runs:
+  using: 'node18'
+  main: 'index.js'
