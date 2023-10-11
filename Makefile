@@ -4,11 +4,11 @@
 all: dist
 
 install:
-	sudo apt install -yqq libsodium-dev
+	sudo apt install -qq libsodium-dev
 
 install-ci:
-	sudo apt update
-	sudo apt install -y libsodium-dev
+	sudo apt-get update -q
+	sudo apt-get install -qy libsodium-dev
 
 dist: install bin/gen_account_keys
 dist-ci: install-ci bin/gen_account_keys

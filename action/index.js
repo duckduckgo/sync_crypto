@@ -21,7 +21,13 @@ const escapeMessage = (value) => (
 );
 
 const addError = (message) => {
-  console.error(`::error title=Failed::${escapeMessage(message)}`);
+  console.error(`::error::${escapeMessage(message)}`);
+};
+const addWarning = (message) => {
+  console.error(`::warning::${escapeMessage(message)}`);
+};
+const addNotice = (message) => {
+  console.error(`::notice::${escapeMessage(message)}`);
 };
 
 const getInput = (name) => {
@@ -64,14 +70,14 @@ const createAccount = () => {
   throw new Error('Not Implemented');
 };
 
-const recoveryKey = ({ user_id, primary_key }) => {
+const recoveryCodeBase64 = ({ user_id, primary_key }) => {
   const recoveryKeyObj = { recovery: { user_id, primary_key } };
   return base64(JSON.stringify(recoveryKeyObj));
 };
 
 const run = async () => {
   const dryRun = getInput('dry-run') !== 'false';
-  console.log('dryRun', dryRun);
+  addNotice('dryRun = ' + dryRun);
 
   buildCLI();
   const keys = await generateAccountKeys();
@@ -81,7 +87,9 @@ const run = async () => {
   // TODO: create account
   // TODO: store bookmarks and credentials
 
-  setOutput('recovery-code', recoveryKey(keys));
+  const recoveryCode = recoveryCodeBase64(keys);
+  addNotice('recovery-code = ' + recoveryCode);
+  setOutput('recovery-code', recoveryCode);
 
   throw new Error('mijo');
 };
