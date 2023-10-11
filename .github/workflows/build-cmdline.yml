@@ -7,16 +7,17 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build_cli:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: build and test
-      run: bash native_lib/build-cmdline.sh
-      
-    - uses: actions/upload-artifact@v3
+    - uses: actions/setup-node@v3
       with:
-        name: test_user_setup binary
-        path: native_lib/test_user_setup
+        node-version: 18
+
+    - name: build
+      run: make dist-ci
+    - name: test
+      run: make test

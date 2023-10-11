@@ -8,6 +8,8 @@ DerivedData/
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
 
+/bin/
+
 # Windows
 windows/**/.vs
 windows/**/*.suo
