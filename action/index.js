@@ -2,40 +2,16 @@
 
 const { execSync } = require('node:child_process');
 const { randomUUID } = require('node:crypto');
-const fs = require('node:fs');
-const os = require('node:os');
+const path = require('node:path');
+const actions = require('./github-actions.js');
 
-const shell = (cmd, options) => execSync(cmd, options).toString().trim();
+const srcdir = path.resolve(__dirname, '..');
 
 const base64 = (value) => Buffer.from(value).toString('base64');
 
-// Equivalent to `echo "{name}={value}" >> "$GITHUB_OUTPUT"`
-const setOutput = (name, value) => {
-  const filePath = process.env.GITHUB_OUTPUT;
-  const githubCmd = `${name}=${value}${os.EOL}`;
-  fs.appendFileSync(filePath, githubCmd, { encoding: 'utf8' });
-}
+const shell = (cmd, options) => execSync(cmd, options).toString().trim();
 
-const escapeMessage = (value) => (
-  (value || '').replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A')
-);
-
-const addError = (message) => {
-  console.error(`::error::${escapeMessage(message)}`);
-};
-const addWarning = (message) => {
-  console.error(`::warning::${escapeMessage(message)}`);
-};
-const addNotice = (message) => {
-  console.error(`::notice::${escapeMessage(message)}`);
-};
-
-const getInput = (name) => {
-  const val = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
-  return val.trim();
-}
-
-const buildCLI = () => shell('make dist-ci');
+const buildCLI = () => shell('make dist-ci', { cwd: srcdir });
 
 const generateAccountKeys = async () => {
   const user_id = randomUUID();
@@ -45,7 +21,7 @@ const generateAccountKeys = async () => {
   const cmd = `./bin/gen_account_keys '${user_id}' '${password}' '${secretKey}'`;
   console.log(`Executing \`${cmd}\`…`);
 
-  const output = JSON.parse(shell(cmd));
+  const output = JSON.parse(shell(cmd, { cwd: srcdir }));
   console.log('./bin/gen_account_keys output:', output);
   const { hashed_password, primary_key, protected_secret_key, secret_key } = output;
 
@@ -76,8 +52,8 @@ const recoveryCodeBase64 = ({ user_id, primary_key }) => {
 };
 
 const run = async () => {
-  const dryRun = getInput('dry-run') !== 'false';
-  if (dryRun) { addNotice('dryRun = ' + dryRun); }
+  const dryRun = actions.getInput('dry-run') !== 'false';
+  if (dryRun) { actions.notice('dryRun = ' + dryRun); }
 
   buildCLI();
   const keys = await generateAccountKeys();
@@ -88,14 +64,12 @@ const run = async () => {
   // TODO: store bookmarks and credentials
 
   const recoveryCode = recoveryCodeBase64(keys);
-  addNotice(`recovery-code = '${recoveryCode}'`);
-  setOutput('recovery-code', recoveryCode);
+  actions.notice(`recovery-code = '${recoveryCode}'`);
+  actions.setOutput('recovery-code', recoveryCode);
 };
 
-
-Promise.resolve()
+return Promise.resolve()
   .then(run)
-  .catch((error) => {
-    process.exitCode = 1;
-    addError(error.message);
-  })
+  .catch((err) => {
+    actions.setFailed(err.toString())
+  });
