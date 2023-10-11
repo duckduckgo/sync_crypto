@@ -5,5 +5,5 @@ outputs:
     description: 'A DDG Sync recovery code'
 
 runs:
-  using: 'node18'
+  using: 'node20'
   main: 'index.js'
