@@ -120,22 +120,22 @@ int main(int argc, char **argv) {
     {
         unsigned char printbuf[sizeof(primaryKey)*2];
         sodium_bin2base64((char*)printbuf, sizeof(printbuf), primaryKey, sizeof(primaryKey), sodium_base64_VARIANT_ORIGINAL);
-        printf("\t\"primaryKey\": \"%s\",\n", printbuf);
+        printf("  \"primary_key\": \"%s\",\n", printbuf);
     }
     {
         unsigned char printbuf[sizeof(secretKey)*2];
         sodium_bin2base64((char*)printbuf, sizeof(printbuf), secretKey, sizeof(secretKey), sodium_base64_VARIANT_ORIGINAL);
-        printf("\t\"secretKey\": \"%s\",\n", printbuf);
+        printf("  \"secret_key\": \"%s\",\n", printbuf);
     }
     {
         unsigned char printbuf[sizeof(protectedSecretKey)*2];
         sodium_bin2base64((char*)printbuf, sizeof(printbuf), protectedSecretKey, sizeof(protectedSecretKey), sodium_base64_VARIANT_ORIGINAL);
-        printf("\t\"protectedSecretKey\": \"%s\",\n", printbuf);
+        printf("  \"protected_secret_key\": \"%s\",\n", printbuf);
     }
     {
         unsigned char printbuf[sizeof(passwordHash)*2];
         sodium_bin2base64((char*)printbuf, sizeof(printbuf), passwordHash, sizeof(passwordHash), sodium_base64_VARIANT_ORIGINAL);
-        printf("\t\"passwordHash\": \"%s\"\n", printbuf);
+        printf("  \"hashed_password\": \"%s\"\n", printbuf);
     }
     printf("}\n");
 
