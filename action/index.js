@@ -1,14 +1,33 @@
 #!/usr/bin/env -S node
 
-const core = require('@actions/core');
-const github = require('@actions/github');
-
 const { execSync } = require('node:child_process');
 const { randomUUID } = require('node:crypto');
+const fs = require('node:fs');
+const os = require('node:os');
 
 const shell = (cmd, options) => execSync(cmd, options).toString().trim();
 
 const base64 = (value) => Buffer.from(value).toString('base64');
+
+// Equivalent to `echo "{name}={value}" >> "$GITHUB_OUTPUT"`
+const setOutput = (name, value) => {
+  const filePath = process.env.GITHUB_OUTPUT;
+  const githubCmd = `${name}=${value}${os.EOL}`;
+  fs.appendFileSync(filePath, githubCmd, { encoding: 'utf8' });
+}
+
+const escapeMessage = (value) => (
+  (value || '').replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A')
+);
+
+const addError = (message) => {
+  console.error(`::error title=Failed::${escapeMessage(message)}`);
+};
+
+const getInput = (name) => {
+  const val = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
+  return val.trim();
+}
 
 const buildCLI = () => shell('make dist-ci');
 
@@ -51,6 +70,9 @@ const recoveryKey = ({ user_id, primary_key }) => {
 };
 
 const run = async () => {
+  const dryRun = getInput('dry-run') !== 'false';
+  console.log('dryRun', dryRun);
+
   buildCLI();
   const keys = await generateAccountKeys();
 
@@ -59,9 +81,15 @@ const run = async () => {
   // TODO: create account
   // TODO: store bookmarks and credentials
 
-  core.setOutput('recovery-code', recoveryKey(keys));
+  setOutput('recovery-code', recoveryKey(keys));
+
+  throw new Error('mijo');
 };
+
 
 Promise.resolve()
   .then(run)
-  .catch((error) => core.setFailed(error.message));
+  .catch((error) => {
+    process.exitCode = 1;
+    addError(error.message);
+  })

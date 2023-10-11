@@ -26,4 +26,6 @@ jobs:
       - uses: actions/checkout@v3
       - id: action
         uses: ./action/
+        with:
+          dry-run: 'true'
       - run: echo "Recovery code is '${{ steps.action.outputs.recovery-code }}'."
