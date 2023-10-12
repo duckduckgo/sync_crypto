@@ -4,6 +4,7 @@ const { execSync } = require('node:child_process');
 const { randomUUID } = require('node:crypto');
 const path = require('node:path');
 const actions = require('./github-actions.js');
+const syncApi = require('./sync-api.js');
 
 const srcdir = path.resolve(__dirname, '..');
 
@@ -35,15 +36,10 @@ const generateAccountKeys = async () => {
   };
 };
 
-const createAccount = () => {
-  // token=$(curl -X POST -H "Content-Type: application/json" -d '{
-  //   "user_id": "'$user_id'",
-  //   "hashed_password": "'$passwordHash'"
-  //   "device_id": "'$device_id'",
-  //   "device_name": "'$device_name'",
-  //   "device_type": "'$device_type'",
-  // }' $url/sync/signup | jq -r '.token')
-  throw new Error('Not Implemented');
+const createAccount = async (accountKeys) => {
+  const response = await syncApi.signup(accountKeys);
+  console.log('Response from POST /signup:', response);
+  return response.token;
 };
 
 const recoveryCodeBase64 = ({ user_id, primary_key }) => {
@@ -58,9 +54,10 @@ const run = async () => {
   buildCLI();
   const keys = await generateAccountKeys();
 
-  console.log('keys', keys);
+  console.log('Account keys:', keys);
+  const jwt = await createAccount(keys);
+  actions.notice(`jwt = '${jwt}'`);
 
-  // TODO: create account
   // TODO: store bookmarks and credentials
 
   const recoveryCode = recoveryCodeBase64(keys);
