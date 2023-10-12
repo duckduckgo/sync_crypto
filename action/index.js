@@ -78,5 +78,6 @@ const run = async () => {
 return Promise.resolve()
   .then(run)
   .catch((err) => {
+    console.error(err);
     actions.setFailed(err.toString())
   });

@@ -17,10 +17,10 @@ const error = (message) => {
   console.error(`::error::${escapeMessage(message)}`);
 };
 const warning = (message) => {
-  console.error(`::warning::${escapeMessage(message)}`);
+  console.log(`::warning::${escapeMessage(message)}`);
 };
 const notice = (message) => {
-  console.error(`::notice::${escapeMessage(message)}`);
+  console.log(`::notice::${escapeMessage(message)}`);
 };
 
 const getInput = (name) => {
