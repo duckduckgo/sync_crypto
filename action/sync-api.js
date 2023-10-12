@@ -10,7 +10,7 @@ const request = async (url, options) => {
   }
 
   try {
-    const json = JSON.parse(text);
+    const json = text ? JSON.parse(text) : {};
     return {
       _status: res.status,
       _headers: Object.fromEntries(res.headers),
