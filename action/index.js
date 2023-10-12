@@ -2,10 +2,11 @@
 
 const { execSync } = require('node:child_process');
 const { randomUUID } = require('node:crypto');
-const fs = require('node:fs');
 const path = require('node:path');
 const actions = require('./github-actions.js');
 const syncApi = require('./sync-api.js');
+
+const sample1Json = require('./data/sample1.json');
 
 const srcdir = path.resolve(__dirname, '..');
 
@@ -46,8 +47,7 @@ const createAccount = async (accountKeys) => {
 };
 
 const storeData = async (jwt) => {
-  const data = fs.readFileSync('./action/data/sample1.json');
-  const response = await syncApi.patchData(jwt, data);
+  const response = await syncApi.patchData(jwt, sample1Json);
   console.log('Response from PATCH /data:', response);
   return response;
 };
@@ -58,7 +58,7 @@ const recoveryCodeBase64 = ({ user_id, primary_key }) => {
 };
 
 const run = async () => {
-  const dryRun = actions.getInput('dry-run') !== 'false';
+  const dryRun = actions.getInput('dry-run') === 'true';
   if (dryRun) { actions.notice('dryRun = ' + dryRun); }
 
   buildCLI();

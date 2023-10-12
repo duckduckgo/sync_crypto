@@ -22,7 +22,9 @@ const signup = async (params) => {
   const body = (typeof params === 'string') ? params : JSON.stringify(params);
   return await request(new URL('signup', endpoint), {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body
   });
 };
@@ -39,7 +41,17 @@ const patchData = async (jwt, data) => {
   });
 };
 
+const deleteAccount = async (jwt) => {
+  return await request(new URL('signup', endpoint), {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${jwt}`,
+    }
+  });
+}
+
 module.exports = {
   signup,
   patchData,
+  deleteAccount,
 };
