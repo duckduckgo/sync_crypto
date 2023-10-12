@@ -31,7 +31,7 @@ const signup = async (params) => {
 
 const patchData = async (jwt, data) => {
   const body = (typeof data === 'string') ? data : JSON.stringify(data);
-  return await request(new URL('signup', endpoint), {
+  return await request(new URL('data', endpoint), {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ const patchData = async (jwt, data) => {
 };
 
 const deleteAccount = async (jwt) => {
-  return await request(new URL('signup', endpoint), {
+  return await request(new URL('delete-account', endpoint), {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${jwt}`,
