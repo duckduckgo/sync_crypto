@@ -130,7 +130,7 @@ int main(int argc, char **argv) {
     {
         unsigned char printbuf[sizeof(protectedSecretKey)*2];
         sodium_bin2base64((char*)printbuf, sizeof(printbuf), protectedSecretKey, sizeof(protectedSecretKey), sodium_base64_VARIANT_ORIGINAL);
-        printf("  \"protected_secret_key\": \"%s\",\n", printbuf);
+        printf("  \"protected_encryption_key\": \"%s\",\n", printbuf);
     }
     {
         unsigned char printbuf[sizeof(passwordHash)*2];

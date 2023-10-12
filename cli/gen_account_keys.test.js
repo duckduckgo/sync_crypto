@@ -49,12 +49,12 @@ describe('gen_account_keys', () => {
     assert.equal(res.status, 0);
 
     const json = JSON.parse(res.stdout);
-    json.protected_secret_key = json.protected_secret_key.replace(/[0-9a-zA-Z/+]/g, '#');
+    json.protected_encryption_key = json.protected_encryption_key.replace(/[0-9a-zA-Z/+]/g, '#');
 
     assert.deepEqual(json, {
       hashed_password: 'BeD1dTKV6Pcatiaf/Ssp2aWdAR8duUT6sA9otTybmcI=',
       primary_key: 'o6LSTn8t6E6Dj5XU1CvTPuGbPjRt6Mqu0sNqjRn/txo=',
-      protected_secret_key: '################################################################################################',
+      protected_encryption_key: '################################################################################################',
       secret_key: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaAAA=',
     });
   });

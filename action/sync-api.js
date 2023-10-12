@@ -1,7 +1,7 @@
 
 const endpoint = 'https://dev-sync-use.duckduckgo.com/sync/';
 
-// Payload requires: user_id, hashed_password, device_id, device_name, device_type
+// Payload requires: user_id, hashed_password, protected_encryption_key, device_id, device_name, device_type
 const signup = async (payload) => {
   const res = await fetch(new URL('signup', endpoint), {
     method: 'POST',

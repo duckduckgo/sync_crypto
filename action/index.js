@@ -24,15 +24,15 @@ const generateAccountKeys = async () => {
 
   const output = JSON.parse(shell(cmd, { cwd: srcdir }));
   console.log('./bin/gen_account_keys output:', output);
-  const { hashed_password, primary_key, protected_secret_key, secret_key } = output;
+  const { hashed_password, primary_key, protected_encryption_key, secret_key } = output;
 
   const device_id = randomUUID();
-  const device_name = base64(process.env.GITHUB_WORKFLOW_REF || 'CI');
-  const device_type = base64('CI');
+  const device_name = base64(process.env.GITHUB_WORKFLOW_REF || 'github.com/duckduckgo/sync_crypto');
+  const device_type = base64('github.com/actions');
   return {
     user_id, hashed_password,
     device_id, device_name, device_type,
-    primary_key, protected_secret_key, secret_key
+    primary_key, protected_encryption_key, secret_key
   };
 };
 
