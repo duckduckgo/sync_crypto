@@ -13,7 +13,12 @@ const signup = async (payload) => {
     throw new Error(`Call to ${res.url} failed with ${res.status} ${res.statusText}: ${text}`);
   }
 
-  return await res.json();
+  const json = await res.json();
+  return {
+    _status: res.status,
+    _headers: Object.fromEntries(res.headers),
+    ...json
+  };
 };
 
 module.exports = {
