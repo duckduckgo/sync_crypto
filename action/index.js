@@ -2,6 +2,7 @@
 
 const { execSync } = require('node:child_process');
 const { randomUUID } = require('node:crypto');
+const fs = require('node:fs');
 const path = require('node:path');
 const actions = require('./github-actions.js');
 const syncApi = require('./sync-api.js');
@@ -17,7 +18,9 @@ const buildCLI = () => shell('make dist-ci', { cwd: srcdir });
 const generateAccountKeys = async () => {
   const user_id = randomUUID();
   const password = randomUUID();
-  const secretKey = 'FCn9kPsQ+2KZNIiKwm4vfRlThm4BrqZv96YYpPM98so='; // this key is bound to the pre-encrypted data
+
+  // this secretKey is bound to the pre-encrypted data at ./data/sample1.json
+  const secretKey = 'FCn9kPsQ+2KZNIiKwm4vfRlThm4BrqZv96YYpPM98so=';
 
   const cmd = `./bin/gen_account_keys '${user_id}' '${password}' '${secretKey}'`;
   console.log(`Executing \`${cmd}\`…`);
@@ -42,6 +45,13 @@ const createAccount = async (accountKeys) => {
   return response.token;
 };
 
+const storeData = async (jwt) => {
+  const data = fs.readFileSync('./action/data/sample1.json');
+  const response = await syncApi.patchData(jwt, data);
+  console.log('Response from PATCH /data:', response);
+  return response;
+};
+
 const recoveryCodeBase64 = ({ user_id, primary_key }) => {
   const recoveryKeyObj = { recovery: { user_id, primary_key } };
   return base64(JSON.stringify(recoveryKeyObj));
@@ -56,9 +66,9 @@ const run = async () => {
 
   console.log('Account keys:', keys);
   const jwt = await createAccount(keys);
-  actions.notice(`jwt = '${jwt}'`);
+  actions.notice(`jwt = '${base64(jwt)}'`);
 
-  // TODO: store bookmarks and credentials
+  await storeData(jwt);
 
   const recoveryCode = recoveryCodeBase64(keys);
   actions.notice(`recovery-code = '${recoveryCode}'`);

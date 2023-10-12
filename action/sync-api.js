@@ -1,16 +1,12 @@
 
 const endpoint = 'https://dev-sync-use.duckduckgo.com/sync/';
 
-// Payload requires: user_id, hashed_password, protected_encryption_key, device_id, device_name, device_type
-const signup = async (payload) => {
-  const res = await fetch(new URL('signup', endpoint), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
+const request = async (url, options) => {
+  const res = await fetch(url, options);
+
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`Call to ${res.url} failed with ${res.status} ${res.statusText}: ${text}`);
+    throw new Error(`${options.method} ${res.url} => ${res.status} ${res.statusText}: ${text}`);
   }
 
   const json = await res.json();
@@ -21,6 +17,29 @@ const signup = async (payload) => {
   };
 };
 
+// Payload requires: user_id, hashed_password, protected_encryption_key, device_id, device_name, device_type
+const signup = async (params) => {
+  const body = (typeof params === 'string') ? params : JSON.stringify(params);
+  return await request(new URL('signup', endpoint), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body
+  });
+};
+
+const patchData = async (jwt, data) => {
+  const body = (typeof data === 'string') ? data : JSON.stringify(data);
+  return await request(new URL('signup', endpoint), {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${jwt}`,
+    },
+    body
+  });
+};
+
 module.exports = {
-  signup
+  signup,
+  patchData,
 };
