@@ -4,17 +4,22 @@ const endpoint = 'https://dev-sync-use.duckduckgo.com/sync/';
 const request = async (url, options) => {
   const res = await fetch(url, options);
 
+  const text = await res.text();
   if (!res.ok) {
-    const text = await res.text();
     throw new Error(`${options.method} ${res.url} => ${res.status} ${res.statusText}: ${text}`);
   }
 
-  const json = await res.json();
-  return {
-    _status: res.status,
-    _headers: Object.fromEntries(res.headers),
-    ...json
-  };
+  try {
+    const json = JSON.parse(text);
+    return {
+      _status: res.status,
+      _headers: Object.fromEntries(res.headers),
+      ...json
+    };
+  } catch (err) {
+    console.error('Failed to parse JSON from response.', text);
+    throw new Error(`${options.method} ${res.url} => ${res.status} ${res.statusText} => Not valid JSON. ${text}`, err);
+  }
 };
 
 // Payload requires: user_id, hashed_password, protected_encryption_key, device_id, device_name, device_type
