@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 
 const escapeMessage = (value) => (
-  (value || '').replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A')
+  (value || '').toString().replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A')
 );
 
 // Equivalent to `echo "{name}={value}" >> "$GITHUB_OUTPUT"`
@@ -13,14 +13,36 @@ const setOutput = (name, value) => {
   fs.appendFileSync(filePath, githubCmd, { encoding: 'utf8' });
 }
 
+const getProps = (message) => {
+  if (!(message instanceof Error)) {
+    return '';
+  }
+
+  const cwd = process.cwd();
+  const stackLine = message.stack.split('\n').filter(line => line.includes(cwd)).pop();
+  if (!stackLine) {
+    return '';
+  }
+  const [file, line, col] = stackLine
+    .replace(/^.*\(/, '')
+    .replace(/\)$/, '')
+    .replace(cwd + '/', '')
+    .split(':');
+  const props = { file, line, col };
+  return Object.entries(props).map(([name, value]) => `${name}=${value}`).join(',');
+};
+
 const error = (message) => {
-  console.error(`::error::${escapeMessage(message)}`);
+  const props = getProps(message);
+  console.error(`::error ${props}::${escapeMessage(message)}`);
 };
 const warning = (message) => {
-  console.log(`::warning::${escapeMessage(message)}`);
+  const props = getProps(message);
+  console.log(`::warning ${props}::${escapeMessage(message)}`);
 };
 const notice = (message) => {
-  console.log(`::notice::${escapeMessage(message)}`);
+  const props = getProps(message);
+  console.log(`::notice ${props}::${escapeMessage(message)}`);
 };
 
 const getInput = (name) => {

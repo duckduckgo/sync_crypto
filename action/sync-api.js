@@ -46,6 +46,15 @@ const patchData = async (jwt, data) => {
   });
 };
 
+const getData = async (jwt) => {
+  return await request(new URL('data', endpoint), {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${jwt}`,
+    }
+  });
+};
+
 const deleteAccount = async (jwt) => {
   return await request(new URL('delete-account', endpoint), {
     method: 'POST',
@@ -58,5 +67,6 @@ const deleteAccount = async (jwt) => {
 module.exports = {
   signup,
   patchData,
+  getData,
   deleteAccount,
 };
