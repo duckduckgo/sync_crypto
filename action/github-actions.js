@@ -1,9 +1,21 @@
 
+/**
+ * This is a minimalist implementation of [@actions/toolkit](https://github.com/actions/toolkit/tree/master/packages/core/src).
+ * With this, the published custom GitHub Action does not need to include node_modules.
+ * See also:
+ * - https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions
+ */
+
 const fs = require('node:fs');
 const os = require('node:os');
 
 const escapeMessage = (value) => (
-  (value || '').toString().replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A')
+  (value || '').toString()
+    .replace(/%/g, '%25')
+    .replace(/\r/g, '%0D')
+    .replace(/\n/g, '%0A')
+    .replace(/:/g, '%3A')
+    .replace(/,/g, '%2C')
 );
 
 // Equivalent to `echo "{name}={value}" >> "$GITHUB_OUTPUT"`
