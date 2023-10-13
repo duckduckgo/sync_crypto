@@ -28,4 +28,5 @@ jobs:
         uses: ./action/
         with:
           dry-run: 'true'
+          debug: 'true'
       - run: echo "Recovery code is '${{ steps.action.outputs.recovery-code }}'."

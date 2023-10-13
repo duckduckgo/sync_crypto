@@ -61,16 +61,21 @@ const recoveryCodeBase64 = ({ user_id, primary_key }) => {
 
 const run = async () => {
   const dryRun = actions.getInput('dry-run') === 'true';
-  if (dryRun) { actions.notice('dryRun = ' + dryRun); }
+  const debug = actions.getInput('debug') === 'true';
 
   buildCLI();
   const keys = await generateAccountKeys();
 
   console.log('Account keys:', keys);
-  const jwt = await createAccount(keys);
-  actions.notice(`jwt = '${base64(jwt)}'`);
 
-  await storeData(jwt);
+  if (dryRun) {
+    actions.notice('dry-run enabled! Not calling API.');
+  } else {
+    const jwt = await createAccount(keys);
+    if (debug) { actions.notice(`jwt = '${base64(jwt)}'`); }
+
+    await storeData(jwt);
+  }
 
   const recoveryCode = recoveryCodeBase64(keys);
   actions.notice(`recovery-code = '${recoveryCode}'`);
