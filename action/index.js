@@ -31,8 +31,10 @@ const generateAccountKeys = async () => {
   const { hashed_password, primary_key, protected_encryption_key, secret_key } = output;
 
   const device_id = randomUUID();
-  const device_name = base64(process.env.GITHUB_WORKFLOW_REF || 'github.com/duckduckgo/sync_crypto');
-  const device_type = base64('github.com/actions');
+  const raw_device_name = process.env.GITHUB_WORKFLOW_REF || 'github.com/duckduckgo/sync_crypto';
+  const raw_device_type = 'github.com/actions';
+  const device_name = shell(`./bin/encrypt '${raw_device_name}' '${primary_key}'`, { cwd: srcdir });
+  const device_type = shell(`./bin/encrypt '${raw_device_type}' '${primary_key}'`, { cwd: srcdir });
   return {
     user_id, hashed_password,
     device_id, device_name, device_type,
