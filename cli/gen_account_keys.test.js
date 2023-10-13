@@ -6,21 +6,9 @@
  * - https://nodejs.org/docs/latest-v18.x/api/assert.html
  */
 const { describe, it } = require('node:test');
-const { execSync } = require('node:child_process');
 const assert = require('node:assert');
 
-const shell = (cmd, options) => execSync(cmd, options).toString().trim();
-
-const tryShell = (cmd, options) => {
-  try {
-    const stdout = shell(cmd, { stdio: 'pipe', ...options });
-    return { status: 0, stdout };
-  } catch (err) {
-    const stdout = err.stdout.toString().trim();
-    const stderr = err.stderr.toString().trim();
-    return { status: err.status, stdout, stderr };
-  }
-};
+const { tryShell } = require('./shell.js');
 
 describe('gen_account_keys', () => {
   it('prints usage if no params passed', () => {
@@ -29,7 +17,6 @@ describe('gen_account_keys', () => {
     assert.deepEqual(res, {
       status: 1,
       stderr: 'Usage: ./bin/gen_account_keys username password secretKey',
-      stdout: '',
     });
   });
 
@@ -39,14 +26,15 @@ describe('gen_account_keys', () => {
     assert.deepEqual(res, {
       status: 2,
       stderr: 'Error decoding secretKey. It must contain 32 bytes encoded in base64.',
-      stdout: '',
     });
   });
 
   it('prints json', () => {
     const res = tryShell('./bin/gen_account_keys user pass aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaAAA=');
 
-    assert.equal(res.status, 0);
+    if (res.status !== 0) {
+      return assert.deepEqual(res, { status: 0 });
+    }
 
     const json = JSON.parse(res.stdout);
     json.protected_encryption_key = json.protected_encryption_key.replace(/[0-9a-zA-Z/+]/g, '#');

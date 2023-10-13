@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sodium.h>
-#include "../native_lib/DDGSyncCrypto.h"
+#include "../native_lib/DDGSyncCrypto.h" // only require type defs, not actual implementation
 
 using std::min;
 
@@ -88,15 +88,19 @@ int main(int argc, char **argv) {
         fprintf(stderr, "Usage: %s username password secretKey\n", argv[0]);
         return 1;
     }
+    if (sodium_init() == -1) {
+        fprintf(stderr, "Error: failed to run sodium_init()\n");
+        return 1;
+    }
 
     const char *username = argv[1];
     const char *password = argv[2];
     const char *secretKeyBase64 = argv[3];
 
-    unsigned char primaryKey[DDGSYNCCRYPTO_PRIMARY_KEY_SIZE];
-    unsigned char secretKey[DDGSYNCCRYPTO_SECRET_KEY_SIZE];
-    unsigned char protectedSecretKey[DDGSYNCCRYPTO_PROTECTED_SECRET_KEY_SIZE];
-    unsigned char passwordHash[DDGSYNCCRYPTO_HASH_SIZE];
+    unsigned char primaryKey[DDGSYNCCRYPTO_PRIMARY_KEY_SIZE] = {0};
+    unsigned char secretKey[DDGSYNCCRYPTO_SECRET_KEY_SIZE] = {0};
+    unsigned char protectedSecretKey[DDGSYNCCRYPTO_PROTECTED_SECRET_KEY_SIZE] = {0};
+    unsigned char passwordHash[DDGSYNCCRYPTO_HASH_SIZE] = {0};
 
     {
         int err = sodium_base642bin(
@@ -118,22 +122,22 @@ int main(int argc, char **argv) {
 
     printf("{\n");
     {
-        unsigned char printbuf[sizeof(primaryKey)*2];
+        unsigned char printbuf[sizeof(primaryKey)*2] = {0};
         sodium_bin2base64((char*)printbuf, sizeof(printbuf), primaryKey, sizeof(primaryKey), sodium_base64_VARIANT_ORIGINAL);
         printf("  \"primary_key\": \"%s\",\n", printbuf);
     }
     {
-        unsigned char printbuf[sizeof(secretKey)*2];
+        unsigned char printbuf[sizeof(secretKey)*2] = {0};
         sodium_bin2base64((char*)printbuf, sizeof(printbuf), secretKey, sizeof(secretKey), sodium_base64_VARIANT_ORIGINAL);
         printf("  \"secret_key\": \"%s\",\n", printbuf);
     }
     {
-        unsigned char printbuf[sizeof(protectedSecretKey)*2];
+        unsigned char printbuf[sizeof(protectedSecretKey)*2] = {0};
         sodium_bin2base64((char*)printbuf, sizeof(printbuf), protectedSecretKey, sizeof(protectedSecretKey), sodium_base64_VARIANT_ORIGINAL);
         printf("  \"protected_encryption_key\": \"%s\",\n", printbuf);
     }
     {
-        unsigned char printbuf[sizeof(passwordHash)*2];
+        unsigned char printbuf[sizeof(passwordHash)*2] = {0};
         sodium_bin2base64((char*)printbuf, sizeof(printbuf), passwordHash, sizeof(passwordHash), sodium_base64_VARIANT_ORIGINAL);
         printf("  \"hashed_password\": \"%s\"\n", printbuf);
     }

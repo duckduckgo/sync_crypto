@@ -21,9 +21,9 @@ bin/gen_account_keys: ./cli/gen_account_keys.c
 	g++ ./cli/gen_account_keys.c -l sodium -o ./bin/gen_account_keys
 	ls -lha ./bin/gen_account_keys
 
-bin/decrypt: ./cli/decrypt.c
+bin/decrypt: ./cli/decrypt.c ./native_lib/DDGSyncCrypto.c
 	mkdir -p ./bin/
-	g++ ./cli/decrypt.c -l sodium -o ./bin/decrypt
+	g++ ./cli/decrypt.c ./native_lib/DDGSyncCrypto.c -l sodium -o ./bin/decrypt
 	ls -lha ./bin/decrypt
 
 test: bin/gen_account_keys
