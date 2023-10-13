@@ -10,7 +10,7 @@ install-ci:
 	sudo apt-get update -q
 	sudo apt-get install -qy libsodium-dev
 
-dist: install bin/gen_account_keys bin/decrypt
+dist: install bin/gen_account_keys bin/decrypt bin/encrypt
 dist-ci: install-ci bin/gen_account_keys
 
 clean:
@@ -21,7 +21,12 @@ bin/gen_account_keys: ./cli/gen_account_keys.c
 	g++ ./cli/gen_account_keys.c -l sodium -o ./bin/gen_account_keys
 	ls -lha ./bin/gen_account_keys
 
-bin/decrypt: ./cli/decrypt.c ./native_lib/DDGSyncCrypto.c
+bin/encrypt: ./cli/encrypt.c ./native_lib/*
+	mkdir -p ./bin/
+	g++ ./cli/encrypt.c ./native_lib/DDGSyncCrypto.c -l sodium -o ./bin/encrypt
+	ls -lha ./bin/encrypt
+
+bin/decrypt: ./cli/decrypt.c ./native_lib/*
 	mkdir -p ./bin/
 	g++ ./cli/decrypt.c ./native_lib/DDGSyncCrypto.c -l sodium -o ./bin/decrypt
 	ls -lha ./bin/decrypt

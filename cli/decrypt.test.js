@@ -23,7 +23,7 @@ describe('decrypt', () => {
     assert.deepEqual(res, { status: 2, stderr: 'Error: failed to decode encrypted_msg! Must be a value base64 string.' });
   });
 
-  it('prints error if encrypted_msg not valid base64', () => {
+  it('prints error if encrypted_key not valid base64', () => {
     const res = tryShell('./bin/decrypt Q0kK xx0.0xx');
 
     assert.deepEqual(res, { status: 2, stderr: 'Error: failed to decode encrypted_key! Must be a value base64 string.' });
@@ -36,6 +36,6 @@ describe('decrypt', () => {
     if (res.status !== 0) {
       return assert.deepEqual(res, { status: 0 });
     }
-    assert.deepEqual(res.stdout, 'Bookmarks');
+    assert.equal(res.stdout, 'Bookmarks');
   });
 })
