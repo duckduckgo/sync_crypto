@@ -10,8 +10,9 @@ install-ci:
 	sudo apt-get update -q
 	sudo apt-get install -qy libsodium-dev
 
-dist: install bin/gen_account_keys bin/decrypt bin/encrypt
-dist-ci: install-ci bin/gen_account_keys
+dist:    install    bin/
+dist-ci: install-ci bin/
+bin/: bin/gen_account_keys bin/decrypt bin/encrypt
 
 clean:
 	rm -rf ./bin/
