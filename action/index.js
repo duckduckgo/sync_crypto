@@ -14,7 +14,7 @@ const base64 = (value) => Buffer.from(value).toString('base64');
 
 const shell = (cmd, options) => execSync(cmd, options).toString().trim();
 
-const buildCLI = () => shell('make dist-ci', { cwd: srcdir });
+const buildCLI = () => shell('make dist', { cwd: srcdir });
 
 const generateAccountKeys = async () => {
   const user_id = randomUUID();
