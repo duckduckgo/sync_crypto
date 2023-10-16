@@ -9,6 +9,10 @@ inputs:
     description: 'Output more debug information.'
     required: false
     default: ''
+  no-teardown:
+    description: 'Disables teardown.'
+    required: false
+    default: ''
 outputs:
   recovery-code:
     description: 'A DDG Sync recovery code, which is a JSON wrapped in base64.'

@@ -12,15 +12,15 @@ const deleteAccount = async (jwt) => {
 
 const run = async () => {
   const dryRun = actions.getInput('dry-run') === 'true';
+  const noTeardown = actions.getInput('no-teardown') === 'true';
 
-  if (dryRun) {
-    console.log('dry-run enabled! Nothing to teardown.');
-  } else {
-    const jwt = actions.getState('jwt');
-    if (!jwt) { return actions.setFailed('No JWT found!?'); }
+  if (dryRun) { return console.log('dry-run enabled! Nothing to teardown.'); }
+  if (noTeardown) { return console.log('no-teardown enabled! Leaving test account open.'); }
 
-    return deleteAccount(jwt);
-  }
+  const jwt = actions.getState('jwt');
+  if (!jwt) { return actions.setFailed('No JWT found!?'); }
+
+  return deleteAccount(jwt);
 };
 
 return Promise.resolve()

@@ -12,6 +12,7 @@ This action creates an account on the staging evironment of DuckDuckGo's Sync AP
 
 - `debug` • Optional. Output more debug information, if set to `"true"`.
 - `dry-run` • Optional. Does not call the Sync API, if set to `"true"`.
+- `no-teardown` • Optional. Does not delete account, if set to `"true"`.
 
 ## Example usage
 
