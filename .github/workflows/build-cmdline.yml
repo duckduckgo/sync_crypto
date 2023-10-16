@@ -28,6 +28,7 @@ jobs:
         id: action
         uses: ./action/
         with:
-          dry-run: 'false'
           debug: 'true'
+          dry-run: 'false'
+          no-teardown: 'false'
       - run: echo "::notice title=recovery code::${{ steps.action.outputs.recovery-code }}"
