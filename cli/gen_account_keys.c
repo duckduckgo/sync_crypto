@@ -83,9 +83,25 @@ DDGSyncCryptoResult ddgSyncGenerateAccountKeysWithSecretKey(
     return DDGSYNCCRYPTO_OK;
 }
 
+size_t from_base64(unsigned char bin[], const char *input)
+{
+    const size_t input_len = strlen(input);
+    const size_t bin_maxlen = input_len * 3 / 4;
+
+    size_t len = 0;
+    int err = sodium_base642bin(bin, bin_maxlen, input, input_len, NULL, &len, NULL, sodium_base64_VARIANT_ORIGINAL);
+    return (err != 0) ? -1 : len;
+}
+
+void to_base64(char b64[], const unsigned char * const bin, const size_t bin_len)
+{
+    sodium_bin2base64(b64, bin_len * 2, bin, bin_len, sodium_base64_VARIANT_ORIGINAL);
+}
+
 int main(int argc, char **argv) {
     if (argc != 4) {
-        fprintf(stderr, "Usage: %s username password secretKey\n", argv[0]);
+        fprintf(stderr, "Usage: %s username password secret_key\n", argv[0]);
+        fprintf(stderr, "  secret_key must be encoded in base64, with %d bytes.\n", DDGSYNCCRYPTO_SECRET_KEY_SIZE);
         return 1;
     }
     if (sodium_init() == -1) {
@@ -93,54 +109,44 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    const char *username = argv[1];
-    const char *password = argv[2];
-    const char *secretKeyBase64 = argv[3];
-
-    unsigned char primaryKey[DDGSYNCCRYPTO_PRIMARY_KEY_SIZE] = {0};
-    unsigned char secretKey[DDGSYNCCRYPTO_SECRET_KEY_SIZE] = {0};
-    unsigned char protectedSecretKey[DDGSYNCCRYPTO_PROTECTED_SECRET_KEY_SIZE] = {0};
-    unsigned char passwordHash[DDGSYNCCRYPTO_HASH_SIZE] = {0};
-
-    {
-        int err = sodium_base642bin(
-            secretKey, DDGSYNCCRYPTO_SECRET_KEY_SIZE,
-            secretKeyBase64, strlen(secretKeyBase64),
-            NULL, NULL, NULL, sodium_base64_VARIANT_ORIGINAL
-        );
-        if (err != 0) {
-            fprintf(stderr, "Error decoding secretKey. It must contain %d bytes encoded in base64.\n", DDGSYNCCRYPTO_SECRET_KEY_SIZE);
-            return 2;
-        }
+    // Parse secret_key
+    const char *b64_secret_key_input = argv[3];
+    unsigned char bin_secret_key[strlen(b64_secret_key_input) * 3 / 4] = {0};
+    const size_t bin_secret_key_len = from_base64(bin_secret_key, b64_secret_key_input);
+    if (bin_secret_key_len == -1) {
+        fprintf(stderr, "Error: failed to decode secret_key! Must be a value base64 string.\n");
+        return 2;
+    }
+    if (bin_secret_key_len != DDGSYNCCRYPTO_SECRET_KEY_SIZE) {
+        fprintf(stderr, "Error: secret_key MUST have %d bytes! Input has %ld bytes.\n", DDGSYNCCRYPTO_SECRET_KEY_SIZE, bin_secret_key_len);
+        return 2;
     }
 
-    DDGSyncCryptoResult res = ddgSyncGenerateAccountKeysWithSecretKey(primaryKey, secretKey, protectedSecretKey, passwordHash, username, password);
+    // Generate remaining secrets
+    const char *username = argv[1];
+    const char *password = argv[2];
+    unsigned char primary_key[DDGSYNCCRYPTO_PRIMARY_KEY_SIZE] = {0};
+    unsigned char protected_secret_key[DDGSYNCCRYPTO_PROTECTED_SECRET_KEY_SIZE] = {0};
+    unsigned char hashed_password[DDGSYNCCRYPTO_HASH_SIZE] = {0};
+    DDGSyncCryptoResult res = ddgSyncGenerateAccountKeysWithSecretKey(primary_key, bin_secret_key, protected_secret_key, hashed_password, username, password);
     if (res != 0) {
         fprintf(stderr, "Error generating account keys: %d\n", res);
         return 3;
     }
 
+    char b64_primary_key[sizeof(primary_key) * 2] = {0};
+    char b64_secret_key[bin_secret_key_len * 2] = {0};
+    char b64_protected_secret_key[sizeof(protected_secret_key) * 2] = {0};
+    char b64_hashed_password[sizeof(hashed_password) * 2] = {0};
+    to_base64(b64_primary_key, primary_key, sizeof(primary_key));
+    to_base64(b64_secret_key, bin_secret_key, bin_secret_key_len);
+    to_base64(b64_protected_secret_key, protected_secret_key, sizeof(protected_secret_key));
+    to_base64(b64_hashed_password, hashed_password, sizeof(hashed_password));
     printf("{\n");
-    {
-        unsigned char printbuf[sizeof(primaryKey)*2] = {0};
-        sodium_bin2base64((char*)printbuf, sizeof(printbuf), primaryKey, sizeof(primaryKey), sodium_base64_VARIANT_ORIGINAL);
-        printf("  \"primary_key\": \"%s\",\n", printbuf);
-    }
-    {
-        unsigned char printbuf[sizeof(secretKey)*2] = {0};
-        sodium_bin2base64((char*)printbuf, sizeof(printbuf), secretKey, sizeof(secretKey), sodium_base64_VARIANT_ORIGINAL);
-        printf("  \"secret_key\": \"%s\",\n", printbuf);
-    }
-    {
-        unsigned char printbuf[sizeof(protectedSecretKey)*2] = {0};
-        sodium_bin2base64((char*)printbuf, sizeof(printbuf), protectedSecretKey, sizeof(protectedSecretKey), sodium_base64_VARIANT_ORIGINAL);
-        printf("  \"protected_encryption_key\": \"%s\",\n", printbuf);
-    }
-    {
-        unsigned char printbuf[sizeof(passwordHash)*2] = {0};
-        sodium_bin2base64((char*)printbuf, sizeof(printbuf), passwordHash, sizeof(passwordHash), sodium_base64_VARIANT_ORIGINAL);
-        printf("  \"hashed_password\": \"%s\"\n", printbuf);
-    }
+    printf("  \"primary_key\": \"%s\",\n", b64_primary_key);
+    printf("  \"secret_key\": \"%s\",\n", b64_secret_key);
+    printf("  \"protected_encryption_key\": \"%s\",\n", b64_protected_secret_key);
+    printf("  \"hashed_password\": \"%s\"\n", b64_hashed_password);
     printf("}\n");
 
     return 0;

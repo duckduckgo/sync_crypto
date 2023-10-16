@@ -16,7 +16,9 @@ describe('gen_account_keys', () => {
 
     assert.deepEqual(res, {
       status: 1,
-      stderr: 'Usage: ./bin/gen_account_keys username password secretKey',
+      stderr:
+        'Usage: ./bin/gen_account_keys username password secret_key\n' +
+        '  secret_key must be encoded in base64, with 32 bytes.'
     });
   });
 
@@ -25,7 +27,7 @@ describe('gen_account_keys', () => {
 
     assert.deepEqual(res, {
       status: 2,
-      stderr: 'Error decoding secretKey. It must contain 32 bytes encoded in base64.',
+      stderr: 'Error: failed to decode secret_key! Must be a value base64 string.',
     });
   });
 
