@@ -31,6 +31,6 @@ bin/decrypt: ./cli/decrypt.c ./native_lib/*
 	mkdir -p ./bin/
 	g++ ./cli/decrypt.c ./native_lib/DDGSyncCrypto.c -l sodium -o ./bin/decrypt
 
-test: bin/gen_account_keys
+test: bin/
 	node --test ./cli/*.test.js
 
