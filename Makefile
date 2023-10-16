@@ -4,7 +4,7 @@
 all: dist
 
 install:
-	sudo apt install -qq libsodium-dev
+	sudo apt-get install -qq libsodium-dev
 
 install-ci:
 	sudo apt-get update -q
