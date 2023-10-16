@@ -8,7 +8,6 @@ on:
 
 jobs:
   build_cli:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +16,19 @@ jobs:
       with:
         node-version: 18
 
-    - name: build
-      run: make dist-ci
-    - name: test
-      run: make test
+    - run: make dist-ci
+    - run: make test
+
+  test_action:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Action
+        id: action
+        uses: ./action/
+        with:
+          debug: 'true'
+          dry-run: 'false'
+          no-teardown: 'false'
+      - run: echo "::notice title=recovery code::${{ steps.action.outputs.recovery-code }}"
