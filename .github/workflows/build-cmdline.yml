@@ -24,9 +24,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - id: action
+      - name: Run Action
+        id: action
         uses: ./action/
         with:
-          dry-run: 'true'
+          dry-run: 'false'
           debug: 'true'
-      - run: echo "Recovery code is '${{ steps.action.outputs.recovery-code }}'."
+      - run: echo "::notice title=recovery code::${{ steps.action.outputs.recovery-code }}"

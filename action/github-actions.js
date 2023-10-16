@@ -25,6 +25,13 @@ const setOutput = (name, value) => {
   fs.appendFileSync(filePath, githubCmd, { encoding: 'utf8' });
 }
 
+// Equivalent to `echo "{name}={value}" >> "$GITHUB_STATE"`
+const setState = (name, value) => {
+  const filePath = process.env.GITHUB_STATE;
+  const githubCmd = `${name}=${value}${os.EOL}`;
+  fs.appendFileSync(filePath, githubCmd, { encoding: 'utf8' });
+}
+
 const getProps = (message) => {
   if (!(message instanceof Error)) {
     return '';
@@ -62,6 +69,11 @@ const getInput = (name) => {
   return val.trim();
 }
 
+const getState = (name) => {
+  const val = process.env[`STATE_${name.replace(/ /g, '_')}`] || '';
+  return val.trim();
+}
+
 const setFailed = (message) => {
   process.exitCode = 1;
   error(message);
@@ -73,5 +85,7 @@ module.exports = {
   warning,
   notice,
   getInput,
+  getState,
+  setState,
   setFailed,
 };

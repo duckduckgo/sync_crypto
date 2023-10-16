@@ -43,14 +43,16 @@ const generateAccountKeys = async () => {
 };
 
 const createAccount = async (accountKeys) => {
+  console.log('POST /signup…');
   const response = await syncApi.signup(accountKeys);
-  console.log('Response from POST /signup:', response);
+  console.log('Response:', response);
   return response.token;
 };
 
 const storeData = async (jwt) => {
+  console.log('PATCH /data…');
   const response = await syncApi.patchData(jwt, sample1Json);
-  console.log('Response from PATCH /data:', response);
+  console.log('Response:', response);
   return response;
 };
 
@@ -74,6 +76,7 @@ const run = async () => {
     const jwt = await createAccount(keys);
     if (debug) { actions.notice(`jwt = '${base64(jwt)}' (in base64)`); }
 
+    actions.setState('jwt', jwt);
     await storeData(jwt);
   }
 
