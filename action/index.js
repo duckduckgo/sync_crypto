@@ -31,10 +31,10 @@ const generateAccountKeys = async () => {
   const { hashed_password, primary_key, protected_encryption_key, secret_key } = output;
 
   const device_id = randomUUID();
-  const raw_device_name = process.env.GITHUB_WORKFLOW_REF || 'github.com/duckduckgo/sync_crypto';
-  const raw_device_type = 'github.com/actions';
-  const device_name = shell(`./bin/encrypt '${raw_device_name}' '${primary_key}'`, { cwd: srcdir });
+  const raw_device_type = 'github:duckduckgo/sync_crypto';
+  const raw_device_name = process.env.GITHUB_REF || raw_device_type;
   const device_type = shell(`./bin/encrypt '${raw_device_type}' '${primary_key}'`, { cwd: srcdir });
+  const device_name = shell(`./bin/encrypt '${raw_device_name}' '${primary_key}'`, { cwd: srcdir });
   return {
     user_id, hashed_password,
     device_id, device_name, device_type,
@@ -72,7 +72,7 @@ const run = async () => {
     actions.notice('dry-run enabled! Not calling API.');
   } else {
     const jwt = await createAccount(keys);
-    if (debug) { actions.notice(`jwt = '${base64(jwt)}'`); }
+    if (debug) { actions.notice(`jwt = '${base64(jwt)}' (in base64)`); }
 
     await storeData(jwt);
   }
