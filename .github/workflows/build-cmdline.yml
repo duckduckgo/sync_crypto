@@ -24,6 +24,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Verify node fetch support
+        run: node --version && echo 'fetch("https://httpbin.org/anything").then(r => r.json()).then(console.log)' | node
       - name: Run Action
         id: action
         uses: ./action/
