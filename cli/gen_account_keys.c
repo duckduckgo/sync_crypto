@@ -111,7 +111,9 @@ int main(int argc, char **argv) {
 
     // Parse secret_key
     const char *b64_secret_key_input = argv[3];
-    unsigned char bin_secret_key[strlen(b64_secret_key_input) * 3 / 4] = {0};
+    unsigned char bin_secret_key[strlen(b64_secret_key_input) * 3 / 4];
+    memset(bin_secret_key, 0, sizeof(bin_secret_key));
+    
     const size_t bin_secret_key_len = from_base64(bin_secret_key, b64_secret_key_input);
     if (bin_secret_key_len == -1) {
         fprintf(stderr, "Error: failed to decode secret_key! Must be a value base64 string.\n");
@@ -134,10 +136,16 @@ int main(int argc, char **argv) {
         return 3;
     }
 
-    char b64_primary_key[sizeof(primary_key) * 2] = {0};
-    char b64_secret_key[bin_secret_key_len * 2] = {0};
-    char b64_protected_secret_key[sizeof(protected_secret_key) * 2] = {0};
-    char b64_hashed_password[sizeof(hashed_password) * 2] = {0};
+    char b64_primary_key[sizeof(primary_key) * 2];
+    char b64_secret_key[bin_secret_key_len * 2];
+    char b64_protected_secret_key[sizeof(protected_secret_key) * 2];
+    char b64_hashed_password[sizeof(hashed_password) * 2];
+    
+    memset(b64_primary_key, 0, sizeof(b64_primary_key));
+    memset(b64_secret_key, 0, sizeof(b64_secret_key));
+    memset(b64_protected_secret_key, 0, sizeof(b64_protected_secret_key));
+    memset(b64_hashed_password, 0, sizeof(b64_hashed_password));
+
     to_base64(b64_primary_key, primary_key, sizeof(primary_key));
     to_base64(b64_secret_key, bin_secret_key, bin_secret_key_len);
     to_base64(b64_protected_secret_key, protected_secret_key, sizeof(protected_secret_key));

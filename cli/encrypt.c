@@ -34,7 +34,8 @@ int main(int argc, char **argv) {
 
     // Parse encryption_key
     const char *b64_key = argv[2];
-    unsigned char bin_key[strlen(b64_key) * 3 / 4] = {0};
+    unsigned char bin_key[strlen(b64_key) * 3 / 4];
+    memset(bin_key, 0, sizeof(bin_key));
     const size_t bin_key_len = from_base64(bin_key, b64_key);
     if (bin_key_len == -1) {
         fprintf(stderr, "Error: failed to decode encrypted_key! Must be a value base64 string.\n");
@@ -46,7 +47,8 @@ int main(int argc, char **argv) {
         printf("---\n");
         printf("key len = %ld (base64) = %ld (bytes)\n", strlen(b64_key), bin_key_len);
         {
-            char printbuf[bin_key_len * 2] = {0};
+            char printbuf[bin_key_len * 2];
+            memset(printbuf, 0, sizeof(printbuf));
             to_base64(printbuf, bin_key, bin_key_len);
             printf("re-encoded key: '%s'\n", printbuf);
         }
@@ -57,14 +59,16 @@ int main(int argc, char **argv) {
         const char *raw_msg = argv[1];
         const size_t raw_msg_len = strlen(raw_msg);
         const size_t encrypted_len = raw_msg_len + crypto_secretbox_MACBYTES + crypto_secretbox_NONCEBYTES;
-        unsigned char encrypted[encrypted_len] = {0};
+        unsigned char encrypted[encrypted_len];
+        memset(encrypted, 0, sizeof(encrypted));
         const int err = ddgSyncEncrypt(encrypted, (unsigned char*)raw_msg, raw_msg_len, bin_key);
         if (err != 0) {
             fprintf(stderr, "Error: (%d) failed to encrypt message!\n", err);
             return 2;
         }
 
-        char b64_encrypted[encrypted_len * 2] = {0};
+        char b64_encrypted[encrypted_len * 2];
+        memset(b64_encrypted, 0, sizeof(b64_encrypted));
         to_base64(b64_encrypted, encrypted, encrypted_len);
         printf("%s\n", b64_encrypted);
     }

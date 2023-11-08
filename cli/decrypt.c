@@ -34,7 +34,8 @@ int main(int argc, char **argv) {
 
     // Parse encrypted_msg
     const char *b64_msg = argv[1];
-    unsigned char bin_msg[strlen(b64_msg) * 3 / 4] = {0};
+    unsigned char bin_msg[strlen(b64_msg) * 3 / 4];
+    memset(bin_msg, 0, sizeof(bin_msg));
     const size_t bin_msg_len = from_base64(bin_msg, b64_msg);
     if (bin_msg_len == -1) {
         fprintf(stderr, "Error: failed to decode encrypted_msg! Must be a value base64 string.\n");
@@ -43,7 +44,8 @@ int main(int argc, char **argv) {
 
     // Parse encryption_key
     const char *b64_key = argv[2];
-    unsigned char bin_key[strlen(b64_key) * 3 / 4] = {0};
+    unsigned char bin_key[strlen(b64_key) * 3 / 4];
+    memset(bin_key, 0, sizeof(bin_key));
     const size_t bin_key_len = from_base64(bin_key, b64_key);
     if (bin_key_len == -1) {
         fprintf(stderr, "Error: failed to decode encrypted_key! Must be a value base64 string.\n");
@@ -56,12 +58,14 @@ int main(int argc, char **argv) {
         printf("msg len = %ld (base64) = %ld (bytes)\n", strlen(b64_msg), bin_msg_len);
         printf("key len = %ld (base64) = %ld (bytes)\n", strlen(b64_key), bin_key_len);
         {
-            char printbuf[bin_msg_len * 2] = {0};
+            char printbuf[bin_msg_len * 2];
+            memset(printbuf, 0, sizeof(printbuf));
             to_base64(printbuf, bin_msg, bin_msg_len);
             printf("re-encoded input: '%s'\n", printbuf);
         }
         {
-            char printbuf[bin_key_len * 2] = {0};
+            char printbuf[bin_key_len * 2];
+            memset(printbuf, 0, sizeof(printbuf));
             to_base64(printbuf, bin_key, bin_key_len);
             printf("re-encoded key: '%s'\n", printbuf);
         }
@@ -70,7 +74,8 @@ int main(int argc, char **argv) {
     }
 
     {
-        unsigned char decrypted[bin_msg_len - crypto_secretbox_NONCEBYTES] = {0};
+        unsigned char decrypted[bin_msg_len - crypto_secretbox_NONCEBYTES];
+        memset(decrypted, 0, sizeof(decrypted));
         const int err = ddgSyncDecrypt(decrypted, bin_msg, bin_msg_len, bin_key);
         if (err != 0) {
             fprintf(stderr, "Error: (%d) failed to decrypt message!\n", err);
