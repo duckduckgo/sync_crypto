@@ -22,7 +22,7 @@ const escapeMessage = (value) => (
 const setOutput = (name, value) => {
   const filePath = process.env.GITHUB_OUTPUT;
   const githubCmd = `${name}=${value}${os.EOL}`;
-  process.env.CI ? fs.appendFileSync(filePath, githubCmd, { encoding: 'utf8' }) : console.log(githubCmd);
+  filePath ? fs.appendFileSync(filePath, githubCmd, { encoding: 'utf8' }) : console.log(githubCmd);
 }
 
 // Equivalent to `echo "{name}={value}" >> "$GITHUB_STATE"`
