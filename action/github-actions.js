@@ -29,7 +29,7 @@ const setOutput = (name, value) => {
 const setState = (name, value) => {
   const filePath = process.env.GITHUB_STATE;
   const githubCmd = `${name}=${value}${os.EOL}`;
-  process.env.CI ? fs.appendFileSync(filePath, githubCmd, { encoding: 'utf8' }) : console.log(githubCmd);
+  filePath ? fs.appendFileSync(filePath, githubCmd, { encoding: 'utf8' }) : console.log(githubCmd);
 }
 
 const getProps = (message) => {
