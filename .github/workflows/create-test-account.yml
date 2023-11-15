@@ -4,18 +4,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_cli:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 18
-
-    - run: make dist-ci
-    - run: make test
-
   test_action:
     runs-on: ubuntu-latest
 
