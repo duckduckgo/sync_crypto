@@ -1,0 +1,24 @@
+name: Create Test Account
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create_test_account:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Verify node fetch support
+        run: node --version && echo 'fetch("https://httpbin.org/anything").then(r => r.json()).then(console.log)' | node
+      - name: Run Action
+        id: action
+        uses: ./action/
+        with:
+          debug: 'true'
+          dry-run: 'false'
+          no-teardown: 'true'
+      - run: echo "::notice title=recovery code::${{ steps.action.outputs.recovery-code }}"
