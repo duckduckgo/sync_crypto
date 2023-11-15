@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test_action:
+  create_test_account:
     runs-on: ubuntu-latest
 
     steps:
