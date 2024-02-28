@@ -1,4 +1,4 @@
-param([string]$version, [string]$defaultConfiguration, [string]$defaultPlatform)
+param([string]$version, [string]$versionPostfix, [string]$defaultConfiguration, [string]$defaultPlatform)
 #Requires -Version 7.0
 $DebugPreference = "Continue"
 $ErrorActionPreference = "Stop"
@@ -22,7 +22,7 @@ RemoveDirectory "WindowsBrowser.Sync.Crypto.Managed\obj"
 function Build ($configuration, $platform) {
     $msbuild = ./vswhere -latest -prerelease -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
 
-    $runtimeIdentifier = "win-$platform"
+    $runtimeIdentifier = "win-$platform".ToLower()
     & $msbuild WindowsBrowser.Sync.Crypto.sln /t:Restore /p:Configuration=$configuration /p:Platform=$platform /p:RuntimeIdentifier=$runtimeIdentifier
     If ($LastExitCode -ne 0) 
     {
@@ -30,11 +30,12 @@ function Build ($configuration, $platform) {
         exit 1
     }
 
-    Write-Debug "Building sync crypto ($configuration | $platform)"
+    $packageVersion = if ($versionPostfix) { "$version-$versionPostfix" } else { $version }
+    Write-Debug "Building sync crypto ($configuration | $platform) $packageVersion"
     & $msbuild WindowsBrowser.Sync.Crypto.sln `
         /p:Configuration=$configuration `
         /p:Platform=$platform `
-        /p:Version=$version
+        /p:Version=$packageVersion
     
     If ($LastExitCode -ne 0) 
     {
@@ -59,7 +60,7 @@ else
 {
     Write-Debug "Building all config and platform"
     foreach ($configuration in @("Release", "Debug")) {
-        foreach ($platform in @("x86", "x64")) {
+        foreach ($platform in @("x86", "x64", "ARM64")) {
             Build $configuration $platform
         }
     }

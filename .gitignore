@@ -21,9 +21,11 @@ windows/**/[Rr]elease/
 windows/**/[Rr]eleases/
 windows/**/x64/
 windows/**/x86/
+windows/**/ARM64/
 windows/**/build/
 windows/**/bld/
 windows/**/[Bb]in/
 windows/**/[Oo]bj/
+windows/.idea/**
 
 /action/node_modules/
