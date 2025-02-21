@@ -4,8 +4,8 @@
 OS_UNAME := $(shell uname)
 
 ifeq ($(OS_UNAME), Darwin)
-	LIB_INCLUDE_PATH = -I./native_lib/third-party/apple/Clibsodium.xcframework/macos-arm64_x86_64/Headers/
-	HEADER_INCLUDE_PATH = -L./native_lib/third-party/apple/Clibsodium.xcframework/macos-arm64_x86_64/
+	LIB_INCLUDE_PATH = -I./native_lib/third-party/apple/Clibsodium.xcframework/macos-arm64_arm64e_x86_64/Headers/
+	HEADER_INCLUDE_PATH = -L./native_lib/third-party/apple/Clibsodium.xcframework/macos-arm64_arm64e_x86_64/
 endif
 
 all: dist
