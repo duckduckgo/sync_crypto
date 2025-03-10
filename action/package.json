@@ -4,7 +4,7 @@
   "description": "DDG Sync GitHub Action",
   "main": "index.js",
   "engines": {
-    "node": "^18"
+    "node": "^20"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

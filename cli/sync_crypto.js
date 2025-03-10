@@ -73,7 +73,7 @@ const keypair = () => {
   const encryptingPublicKey = sodium.crypto_sign_ed25519_pk_to_curve25519(signingPair.publicKey);
   const encryptingPrivateKey = sodium.crypto_sign_ed25519_sk_to_curve25519(signingPair.privateKey);
 
-  console.log({
+  console.log(JSON.stringify({
     Ed25519: {
       public: to_base64(signingPair.publicKey, outputVariant),
       private: to_base64(signingPair.privateKey, outputVariant),
@@ -82,7 +82,7 @@ const keypair = () => {
       public: to_base64(encryptingPublicKey, outputVariant),
       private: to_base64(encryptingPrivateKey, outputVariant),
     }
-  });
+  }, null, '  '));
 };
 
 // Uses crypto_secretbox_seal

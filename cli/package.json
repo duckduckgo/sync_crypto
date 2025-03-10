@@ -11,7 +11,7 @@
     "url": "git+ssh://git@github.com/duckduckgo/sync_crypto.git"
   },
   "engines": {
-    "node": "22"
+    "node": "^22"
   },
   "author": "JP Bochi",
   "license": "Unlicense",
