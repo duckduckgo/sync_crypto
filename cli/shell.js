@@ -1,11 +1,23 @@
+#!/usr/bin/env node
 
-const { execSync } = require('node:child_process');
+const { execSync, exec } = require('node:child_process');
+const { promisify } = require('node:util');
 
-const shell = (cmd, options) => execSync(cmd, options).toString().trim();
+const execProm = promisify(exec);
+
+const shellSync = (cmd, options) => (execSync(cmd, options) || '').toString().trim();
+const shell = async (cmd, options) => execProm(cmd, options);
+
+const tee = async (cmd, options) => {
+  const proc = execProm(cmd, options);
+  proc.child.stdout.pipe(process.stdout);
+  proc.child.stderr.pipe(process.stderr);
+  return proc;
+};
 
 const tryShell = (cmd, options) => {
   try {
-    const stdout = shell(cmd, { stdio: 'pipe', ...options });
+    const stdout = shellSync(cmd, { stdio: 'pipe', ...options });
     return { status: 0, stdout };
   } catch (err) {
     return Object.fromEntries(
@@ -18,7 +30,18 @@ const tryShell = (cmd, options) => {
   }
 };
 
+// https://man.openbsd.org/sysexits or /usr/include/sysexits.h
+const sysexits = {
+  EX_USAGE: 64,
+  EX_DATAERR: 65,
+  EX_CANTCREAT: 73,
+  EX_NOPERM: 77,
+};
+
 module.exports = {
-  shell,
   tryShell,
+  shellSync,
+  shell,
+  tee,
+  sysexits
 };

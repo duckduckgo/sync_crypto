@@ -1,0 +1,25 @@
+{
+  "name": "ddg_sync_crypto",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sync_crypto.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/duckduckgo/sync_crypto.git"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "author": "JP Bochi",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/duckduckgo/sync_crypto/issues"
+  },
+  "homepage": "https://github.com/duckduckgo/sync_crypto#readme",
+  "dependencies": {
+    "libsodium-wrappers": "^0.7.15"
+  }
+}
