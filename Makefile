@@ -23,7 +23,7 @@ endif
 
 dist:    install    bin/
 dist-ci: install-ci bin/
-bin/: bin/gen_account_keys bin/decrypt bin/encrypt
+bin/: bin/gen_account_keys bin/decrypt bin/encrypt bin/gen_key_pair
 	ls -lA ./bin/
 
 clean:
@@ -41,6 +41,10 @@ bin/encrypt: ./cli/encrypt.c ./native_lib/*
 bin/decrypt: ./cli/decrypt.c ./native_lib/*
 	mkdir -p ./bin/
 	g++ $(HEADER_INCLUDE_PATH) ./cli/decrypt.c ./native_lib/DDGSyncCrypto.c $(LIB_INCLUDE_PATH) -l sodium -o ./bin/decrypt
+
+bin/gen_key_pair: ./cli/gen_key_pair.c ./native_lib/*
+	mkdir -p ./bin/
+	g++ $(HEADER_INCLUDE_PATH) ./cli/gen_key_pair.c ./native_lib/DDGSyncCrypto.c $(LIB_INCLUDE_PATH) -l sodium -o ./bin/gen_key_pair
 
 test: bin/
 	node --test ./cli/*.test.js
