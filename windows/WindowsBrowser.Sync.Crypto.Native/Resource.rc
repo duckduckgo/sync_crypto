@@ -1,6 +1,6 @@
 1 VERSIONINFO
-FILEVERSION 1,1,0,0
-PRODUCTVERSION 1,1,0,0
+FILEVERSION 1,2,0,0
+PRODUCTVERSION 1,2,0,0
 FILEOS 0x40004
 FILETYPE 0x1
 {
@@ -10,11 +10,11 @@ FILETYPE 0x1
 		{
 			VALUE "CompanyName", "DuckDuckGo"
 				VALUE "FileDescription", "Sync crypto library"
-				VALUE "FileVersion", "1.1.0.0\0"
+				VALUE "FileVersion", "1.2.0.0\0"
 				VALUE "LegalCopyright", "© 2025 DuckDuckGo"
 				VALUE "InternalName", "SyncCrypto.dll"
 				VALUE "ProductName", "SyncCrypto.dll"
-				VALUE "ProductVersion", "1.1.0.0\0"
+				VALUE "ProductVersion", "1.2.0.0\0"
 		}
 	}
 
