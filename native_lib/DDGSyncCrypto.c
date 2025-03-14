@@ -4,19 +4,18 @@
 #include "DDGSyncCrypto.h"
 #include "sodium.h"
 
-// Seems mad that you still need to define this?!
+#ifndef min
 #define min(x, y) (x < y) ? x : y
+#endif
 
 // Contexts must be 8 characters long but are otherwise arbitrary
 #define DDGSYNC_STRETCHED_PRIMARY_KEY_CONTEXT "Stretchy"
 #define DDGSYNC_PASSWORD_HASH_CONTEXT "Password"
 
-enum DDGSyncCryptoSubkeyIds : int {
-
+typedef enum DDGSyncCryptoSubkeyIds {
     DDGSyncCryptoPasswordHashSubkey = 1,
     DDGSyncCryptoStretchedPrimaryKeySubkey,
-
-};
+} DDGSyncCryptoSubkeyIds;
 
 DDGSyncCryptoResult ddgSyncGenerateAccountKeys(
     unsigned char primaryKey[DDGSYNCCRYPTO_PRIMARY_KEY_SIZE],
@@ -166,7 +165,7 @@ DDGSyncCryptoResult ddgSyncSeal(
     unsigned char *message,
     unsigned long long messageLength) {
 
-    unsigned char* output = (unsigned char*)malloc((crypto_box_SEALBYTES + messageLength) * sizeof(unsigned char));
+    unsigned char* output = (unsigned char*)malloc((crypto_box_SEALBYTES + (size_t)messageLength) * sizeof(unsigned char));
     if (!output) {
         return DDGSYNCCRYPTO_SEAL_FAILED;
     }
@@ -176,7 +175,7 @@ DDGSyncCryptoResult ddgSyncSeal(
         result = DDGSYNCCRYPTO_SEAL_FAILED;
     }
     else {
-        memcpy(sealed, output, crypto_box_SEALBYTES + messageLength);
+        memcpy(sealed, output, crypto_box_SEALBYTES + (size_t)messageLength);
         result = DDGSYNCCRYPTO_OK;
     }
     free(output);
@@ -190,7 +189,7 @@ DDGSyncCryptoResult ddgSyncSealOpen(
     unsigned char secretKey[DDGSYNCCRYPTO_PRIVATE_KEY_SIZE],
     unsigned char *rawBytes) {
 
-    unsigned char* decrypted = (unsigned char*)malloc((cypherTextLength - crypto_box_SEALBYTES) * sizeof(unsigned char));
+    unsigned char* decrypted = (unsigned char*)malloc(((size_t)cypherTextLength - crypto_box_SEALBYTES) * sizeof(unsigned char));
     if (!decrypted) {
         return DDGSYNCCRYPTO_SEAL_FAILED;
     }
@@ -200,7 +199,7 @@ DDGSyncCryptoResult ddgSyncSealOpen(
         result = DDGSYNCCRYPTO_SEAL_FAILED;
     }
     else {
-        memcpy(rawBytes, decrypted, cypherTextLength - crypto_box_SEALBYTES);
+        memcpy(rawBytes, decrypted, (size_t)cypherTextLength - crypto_box_SEALBYTES);
         result = DDGSYNCCRYPTO_OK;
     }
 
