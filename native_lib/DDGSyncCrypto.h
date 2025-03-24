@@ -9,7 +9,7 @@
 #ifndef DDGSyncCrypto_h
 #define DDGSyncCrypto_h
 
-typedef enum : int {
+typedef enum DDGSyncCryptoSizes {
     DDGSYNCCRYPTO_HASH_SIZE = 32,
     DDGSYNCCRYPTO_PRIMARY_KEY_SIZE = 32,
     DDGSYNCCRYPTO_SECRET_KEY_SIZE = 32,
@@ -21,7 +21,7 @@ typedef enum : int {
     DDGSYNCCRYPTO_SEAL_EXTRA_BYTES_SIZE = crypto_box_SEALBYTES
 } DDGSyncCryptoSizes;
 
-typedef enum : int {
+typedef enum DDGSyncCryptoResult {
     DDGSYNCCRYPTO_OK,
     DDGSYNCCRYPTO_UNKNOWN_ERROR,
     DDGSYNCCRYPTO_INVALID_USERID,
