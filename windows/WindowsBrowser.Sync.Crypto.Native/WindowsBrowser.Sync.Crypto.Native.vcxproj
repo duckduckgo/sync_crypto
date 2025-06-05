@@ -293,12 +293,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\native_lib\DDGSyncCrypto.h" />
+    <ClInclude Include="DDGChaCha20Poly1305.h" />
     <ClInclude Include="DDGSyncCryptoSizes.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\native_lib\DDGSyncCrypto.c">
     </ClCompile>
+    <ClCompile Include="DDGChaCha20Poly1305.c" />
     <ClCompile Include="DDGSyncCryptoSizes.c">
     </ClCompile>
   </ItemGroup>

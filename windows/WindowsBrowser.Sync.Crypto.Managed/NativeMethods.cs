@@ -9,7 +9,7 @@ namespace WindowsBrowser.Sync.Crypto.Managed
 {
     public class NativeMethods
     {
-        private const string DllPath = "WindowsBrowser.Sync.Crypto.Native.dll";
+        public const string DllPath = "WindowsBrowser.Sync.Crypto.Native.dll";
 
         [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl)]
         public static extern int ddgSyncGet_DDGSYNCCRYPTO_HASH_SIZE();
