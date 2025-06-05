@@ -24,12 +24,18 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DDGChaCha20Poly1305.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\native_lib\DDGSyncCrypto.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DDGSyncCryptoSizes.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DDGChaCha20Poly1305.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WindowsBrowser.Sync.Crypto.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsBrowser.Sync.Crypto.Managed", "WindowsBrowser.Sync.Crypto.Managed\WindowsBrowser.Sync.Crypto.Managed.csproj", "{712656F6-9010-4C02-8D35-67722BDBAC33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsBrowser.Sync.Crypto.Managed.Tests", "WindowsBrowser.Sync.Crypto.Managed.Tests\WindowsBrowser.Sync.Crypto.Managed.Tests.csproj", "{60F4952C-4059-4C8E-832A-0B814BCF078F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -41,6 +43,18 @@ Global
 		{712656F6-9010-4C02-8D35-67722BDBAC33}.Release|x64.Build.0 = Release|x64
 		{712656F6-9010-4C02-8D35-67722BDBAC33}.Release|x86.ActiveCfg = Release|x86
 		{712656F6-9010-4C02-8D35-67722BDBAC33}.Release|x86.Build.0 = Release|x86
+		{60F4952C-4059-4C8E-832A-0B814BCF078F}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{60F4952C-4059-4C8E-832A-0B814BCF078F}.Debug|ARM64.Build.0 = Debug|ARM64
+		{60F4952C-4059-4C8E-832A-0B814BCF078F}.Debug|x64.ActiveCfg = Debug|x64
+		{60F4952C-4059-4C8E-832A-0B814BCF078F}.Debug|x64.Build.0 = Debug|x64
+		{60F4952C-4059-4C8E-832A-0B814BCF078F}.Debug|x86.ActiveCfg = Debug|x86
+		{60F4952C-4059-4C8E-832A-0B814BCF078F}.Debug|x86.Build.0 = Debug|x86
+		{60F4952C-4059-4C8E-832A-0B814BCF078F}.Release|ARM64.ActiveCfg = Release|ARM64
+		{60F4952C-4059-4C8E-832A-0B814BCF078F}.Release|ARM64.Build.0 = Release|ARM64
+		{60F4952C-4059-4C8E-832A-0B814BCF078F}.Release|x64.ActiveCfg = Release|x64
+		{60F4952C-4059-4C8E-832A-0B814BCF078F}.Release|x64.Build.0 = Release|x64
+		{60F4952C-4059-4C8E-832A-0B814BCF078F}.Release|x86.ActiveCfg = Release|x86
+		{60F4952C-4059-4C8E-832A-0B814BCF078F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
