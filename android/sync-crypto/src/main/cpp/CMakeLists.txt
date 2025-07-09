@@ -27,4 +27,8 @@ target_include_directories(ddgcrypto PRIVATE ${CMAKE_SOURCE_DIR}/../../../../../
 target_link_libraries(ddgcrypto sodium)
 
 # Make sure ddgcrypto is 16KB compatible
-target_link_options(ddgcrypto PRIVATE "-Wl,-z,max-page-size=16384")
+target_link_options(
+  ddgcrypto
+  PRIVATE
+  "-Wl,-z,common-page-size=16384"
+  "-Wl,-z,max-page-size=16384")
