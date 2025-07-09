@@ -30,3 +30,8 @@ windows/.idea/**
 
 /action/node_modules/
 /cli/node_modules/
+
+#Android
+/.idea/
+android/.idea/
+

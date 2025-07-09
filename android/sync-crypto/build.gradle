@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id "com.vanniktech.maven.publish" version "0.23.1"
+    id "com.vanniktech.maven.publish" version "0.33.0"
 }
 
 def getVersionName = { ->
@@ -20,8 +20,8 @@ def buildVersionCode = {
 import com.vanniktech.maven.publish.SonatypeHost
 
 mavenPublishing {
-    // publishing to https://s01.oss.sonatype.org
-    publishToMavenCentral(SonatypeHost.S01, true)
+    // publishing to CentralPortal (https://repo.maven.apache.org/maven2/com/duckduckgo/synccrypto/sync-crypto-android/)
+    publishToMavenCentral()
 
     signAllPublications()
 
@@ -56,6 +56,8 @@ mavenPublishing {
 
 android {
     compileSdk 32
+
+    namespace "com.duckduckgo.synccrypto"
 
     defaultConfig {
         minSdk 23
