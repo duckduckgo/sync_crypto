@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version-file: .node-version
       - name: Verify node fetch support
         run: node --version && echo 'fetch("https://httpbin.org/anything").then(r => r.json()).then(console.log)' | node
       - name: Run Action
