@@ -18,6 +18,6 @@ outputs:
     description: 'A DDG Sync recovery code, which is a JSON wrapped in base64.'
 
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'index.js'
   post: 'teardown.js'
