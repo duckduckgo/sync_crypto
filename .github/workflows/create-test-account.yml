@@ -12,6 +12,8 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version-file: .node-version
+      - name: Test npm cooldown
+        run: npm pack --dry-run electron-to-chromium@1.5.494
       - name: Verify node fetch support
         run: node --version && echo 'fetch("https://httpbin.org/anything").then(r => r.json()).then(console.log)' | node
       - name: Run Action
